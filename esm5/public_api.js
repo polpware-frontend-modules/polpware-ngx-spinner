@@ -1,0 +1,12 @@
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/*
+ * Public API Surface of ngx-spinner
+ */
+export { SpinnerServiceImpl } from "./lib/spinner/spinner-service.impl";
+export { loadingIndicatorDecorator } from "./lib/spinner/loading-indicator.decorator";
+export { NullSpinner } from "./lib/spinner/spinner.interface";
+export {} from "./lib/interfaces/indicators.interface";
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljX2FwaS5qcyIsInNvdXJjZVJvb3QiOiJuZzovL0Bwb2xwd2FyZS9uZ3gtc3Bpbm5lci8iLCJzb3VyY2VzIjpbInB1YmxpY19hcGkudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7OztBQUlBLG1DQUFjLG9DQUFvQyxDQUFDO0FBQ25ELDBDQUFjLDJDQUEyQyxDQUFDO0FBQzFELDRCQUFjLGlDQUFpQyxDQUFDO0FBQ2hELGVBQWMsdUNBQXVDLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKlxuICogUHVibGljIEFQSSBTdXJmYWNlIG9mIG5neC1zcGlubmVyXG4gKi9cblxuZXhwb3J0ICogZnJvbSBcIi4vbGliL3NwaW5uZXIvc3Bpbm5lci1zZXJ2aWNlLmltcGxcIjtcbmV4cG9ydCAqIGZyb20gXCIuL2xpYi9zcGlubmVyL2xvYWRpbmctaW5kaWNhdG9yLmRlY29yYXRvclwiO1xuZXhwb3J0ICogZnJvbSBcIi4vbGliL3NwaW5uZXIvc3Bpbm5lci5pbnRlcmZhY2VcIjtcbmV4cG9ydCAqIGZyb20gXCIuL2xpYi9pbnRlcmZhY2VzL2luZGljYXRvcnMuaW50ZXJmYWNlXCI7XG5cbiJdfQ==

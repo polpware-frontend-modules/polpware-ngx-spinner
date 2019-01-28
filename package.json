@@ -1,0 +1,22 @@
+{
+  "name": "@polpware/ngx-spinner",
+  "version": "7.0.0",
+  "peerDependencies": {
+    "@angular/common": "^7.2.0",
+    "@angular/core": "^7.2.0",
+    "ngx-spinner": "^7.0.0"
+  },
+  "main": "bundles/polpware-ngx-spinner.umd.js",
+  "module": "fesm5/polpware-ngx-spinner.js",
+  "es2015": "fesm2015/polpware-ngx-spinner.js",
+  "esm5": "esm5/polpware-ngx-spinner.js",
+  "esm2015": "esm2015/polpware-ngx-spinner.js",
+  "fesm5": "fesm5/polpware-ngx-spinner.js",
+  "fesm2015": "fesm2015/polpware-ngx-spinner.js",
+  "typings": "polpware-ngx-spinner.d.ts",
+  "metadata": "polpware-ngx-spinner.metadata.json",
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^1.9.0"
+  }
+}
