@@ -74,6 +74,7 @@
             this._showingDelay = DefaultShowingDelayPeroid;
             this._dismissingTimer = null;
             this._spinnerState = false;
+            this.startToListenSpinner();
         }
         // Note that we do not need to stop it, as this is a service starting in the beginning.
         // Note that we do not need to stop it, as this is a service starting in the beginning.
