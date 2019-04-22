@@ -18,9 +18,9 @@ class SpinnerServiceImpl {
     constructor(_underlyingSpinner) {
         this._underlyingSpinner = _underlyingSpinner;
         this._referenceCounter = 0;
-        this._showingTimer = null;
+        this._showingTimer = 0;
         this._showingDelay = DefaultShowingDelayPeroid;
-        this._dismissingTimer = null;
+        this._dismissingTimer = 0;
         this._spinnerState = false;
         this.startToListenSpinner();
     }
@@ -88,9 +88,11 @@ class SpinnerServiceImpl {
          */
         () => {
             console.log('show --- run');
-            // Clean up the timer
-            this._showingTimer = null;
-            this._underlyingSpinner.show(name);
+            if (this._showingTimer) {
+                // Clean up the timer
+                this._showingTimer = 0;
+                this._underlyingSpinner.show(name);
+            }
         }), this._showingDelay);
     }
     /**
@@ -106,8 +108,8 @@ class SpinnerServiceImpl {
         // If the spinner has not been scheduled.
         if (this._showingTimer) {
             console.log('hide --- remove the show scheduler');
-            this._showingTimer = null;
             clearTimeout(this._showingTimer);
+            this._showingTimer = 0;
             // Done
             return;
         }
@@ -120,10 +122,14 @@ class SpinnerServiceImpl {
              * @return {?}
              */
             () => {
-                // Clean up the timer
-                this._dismissingTimer = null;
-                // Dismiss the spinner 
-                this._underlyingSpinner.hide();
+                console.log('hide -run (1)');
+                if (this._dismissingTimer) {
+                    console.log('live');
+                    // Clean up the timer
+                    this._dismissingTimer = 0;
+                    // Dismiss the spinner 
+                    this._underlyingSpinner.hide();
+                }
             }), DismissingDelayPeroid);
             return;
         }
@@ -134,9 +140,13 @@ class SpinnerServiceImpl {
              * @return {?}
              */
             () => {
-                this._dismissingTimer = null;
-                // Dismiss the spinner 
-                this._underlyingSpinner.hide(name);
+                console.log('hide -run (2)');
+                if (this._dismissingTimer) {
+                    console.log('live');
+                    this._dismissingTimer = 0;
+                    // Dismiss the spinner 
+                    this._underlyingSpinner.hide(name);
+                }
             }), DismissingDelayPeroid);
         }
     }

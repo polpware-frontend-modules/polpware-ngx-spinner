@@ -70,9 +70,9 @@
         function SpinnerServiceImpl(_underlyingSpinner) {
             this._underlyingSpinner = _underlyingSpinner;
             this._referenceCounter = 0;
-            this._showingTimer = null;
+            this._showingTimer = 0;
             this._showingDelay = DefaultShowingDelayPeroid;
-            this._dismissingTimer = null;
+            this._dismissingTimer = 0;
             this._spinnerState = false;
             this.startToListenSpinner();
         }
@@ -164,9 +164,11 @@
              */
             function () {
                 console.log('show --- run');
-                // Clean up the timer
-                _this._showingTimer = null;
-                _this._underlyingSpinner.show(name);
+                if (_this._showingTimer) {
+                    // Clean up the timer
+                    _this._showingTimer = 0;
+                    _this._underlyingSpinner.show(name);
+                }
             }), this._showingDelay);
         };
         /**
@@ -188,8 +190,8 @@
             // If the spinner has not been scheduled.
             if (this._showingTimer) {
                 console.log('hide --- remove the show scheduler');
-                this._showingTimer = null;
                 clearTimeout(this._showingTimer);
+                this._showingTimer = 0;
                 // Done
                 return;
             }
@@ -202,10 +204,14 @@
                  * @return {?}
                  */
                 function () {
-                    // Clean up the timer
-                    _this._dismissingTimer = null;
-                    // Dismiss the spinner 
-                    _this._underlyingSpinner.hide();
+                    console.log('hide -run (1)');
+                    if (_this._dismissingTimer) {
+                        console.log('live');
+                        // Clean up the timer
+                        _this._dismissingTimer = 0;
+                        // Dismiss the spinner 
+                        _this._underlyingSpinner.hide();
+                    }
                 }), DismissingDelayPeroid);
                 return;
             }
@@ -216,9 +222,13 @@
                  * @return {?}
                  */
                 function () {
-                    _this._dismissingTimer = null;
-                    // Dismiss the spinner 
-                    _this._underlyingSpinner.hide(name);
+                    console.log('hide -run (2)');
+                    if (_this._dismissingTimer) {
+                        console.log('live');
+                        _this._dismissingTimer = 0;
+                        // Dismiss the spinner 
+                        _this._underlyingSpinner.hide(name);
+                    }
                 }), DismissingDelayPeroid);
             }
         };
