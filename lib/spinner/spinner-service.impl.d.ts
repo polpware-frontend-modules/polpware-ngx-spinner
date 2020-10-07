@@ -1,5 +1,6 @@
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ISpinnerService } from './spinner.interface';
+import * as i0 from "@angular/core";
 export declare class SpinnerServiceImpl implements ISpinnerService {
     private readonly _underlyingSpinner;
     private _showingTimer;
@@ -12,4 +13,6 @@ export declare class SpinnerServiceImpl implements ISpinnerService {
     setDelay(seconds: number): void;
     show(title?: string, name?: string): void;
     hide(name?: string): void;
+    static ɵfac: i0.ɵɵFactoryDef<SpinnerServiceImpl, never>;
+    static ɵprov: i0.ɵɵInjectableDef<SpinnerServiceImpl>;
 }

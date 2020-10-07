@@ -1,16 +1,9 @@
-import { Injectable } from '@angular/core';
+import { ɵɵinject, ɵɵdefineInjectable, ɵsetClassMetadata, Injectable } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { __extends, __spread } from 'tslib';
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/** @type {?} */
 var PRIMARY_SPINNER = 'primary';
-/** @type {?} */
 var DismissingDelayPeroid = 300;
-/** @type {?} */
 var DefaultShowingDelayPeroid = 500;
 var SpinnerServiceImpl = /** @class */ (function () {
     function SpinnerServiceImpl(_underlyingSpinner) {
@@ -23,55 +16,19 @@ var SpinnerServiceImpl = /** @class */ (function () {
         this.startToListenSpinner();
     }
     // Note that we do not need to stop it, as this is a service starting in the beginning.
-    // Note that we do not need to stop it, as this is a service starting in the beginning.
-    /**
-     * @param {?=} name
-     * @return {?}
-     */
-    SpinnerServiceImpl.prototype.startToListenSpinner = 
-    // Note that we do not need to stop it, as this is a service starting in the beginning.
-    /**
-     * @param {?=} name
-     * @return {?}
-     */
-    function (name) {
+    SpinnerServiceImpl.prototype.startToListenSpinner = function (name) {
         var _this = this;
         if (name === void 0) { name = PRIMARY_SPINNER; }
         // Set up the listener
-        this._underlyingSpinner.getSpinner(PRIMARY_SPINNER).subscribe((/**
-         * @param {?} x
-         * @return {?}
-         */
-        function (x) {
+        this._underlyingSpinner.getSpinner(PRIMARY_SPINNER).subscribe(function (x) {
             _this._spinnerState = x.show;
-        }));
+        });
     };
-    /**
-     * @param {?} seconds
-     * @return {?}
-     */
-    SpinnerServiceImpl.prototype.setDelay = /**
-     * @param {?} seconds
-     * @return {?}
-     */
-    function (seconds) {
+    SpinnerServiceImpl.prototype.setDelay = function (seconds) {
         this._showingDelay = seconds * 1000;
     };
     // Override
-    // Override
-    /**
-     * @param {?=} title
-     * @param {?=} name
-     * @return {?}
-     */
-    SpinnerServiceImpl.prototype.show = 
-    // Override
-    /**
-     * @param {?=} title
-     * @param {?=} name
-     * @return {?}
-     */
-    function (title, name) {
+    SpinnerServiceImpl.prototype.show = function (title, name) {
         var _this = this;
         if (title === void 0) { title = 'Loading ...'; }
         if (name === void 0) { name = PRIMARY_SPINNER; }
@@ -105,27 +62,16 @@ var SpinnerServiceImpl = /** @class */ (function () {
             return;
         }
         // Otherwise, schdule to show the spinner.
-        this._showingTimer = setTimeout((/**
-         * @return {?}
-         */
-        function () {
+        this._showingTimer = setTimeout(function () {
             console.log('show --- run');
             if (_this._showingTimer) {
                 // Clean up the timer
                 _this._showingTimer = 0;
                 _this._underlyingSpinner.show(name);
             }
-        }), this._showingDelay);
+        }, this._showingDelay);
     };
-    /**
-     * @param {?=} name
-     * @return {?}
-     */
-    SpinnerServiceImpl.prototype.hide = /**
-     * @param {?=} name
-     * @return {?}
-     */
-    function (name) {
+    SpinnerServiceImpl.prototype.hide = function (name) {
         var _this = this;
         if (name === void 0) { name = PRIMARY_SPINNER; }
         this._referenceCounter--;
@@ -146,10 +92,7 @@ var SpinnerServiceImpl = /** @class */ (function () {
         if (this._dismissingTimer) {
             console.log('hide --- already shceduled');
             clearTimeout(this._dismissingTimer);
-            this._dismissingTimer = setTimeout((/**
-             * @return {?}
-             */
-            function () {
+            this._dismissingTimer = setTimeout(function () {
                 console.log('hide -run (1)');
                 if (_this._dismissingTimer) {
                     console.log('live');
@@ -158,16 +101,13 @@ var SpinnerServiceImpl = /** @class */ (function () {
                     // Dismiss the spinner 
                     _this._underlyingSpinner.hide();
                 }
-            }), DismissingDelayPeroid);
+            }, DismissingDelayPeroid);
             return;
         }
         // Schedule to dismiss the spinner
         if (this._spinnerState) {
             console.log('hide --- schedule');
-            this._dismissingTimer = setTimeout((/**
-             * @return {?}
-             */
-            function () {
+            this._dismissingTimer = setTimeout(function () {
                 console.log('hide -run (2)');
                 if (_this._dismissingTimer) {
                     console.log('live');
@@ -175,120 +115,56 @@ var SpinnerServiceImpl = /** @class */ (function () {
                     // Dismiss the spinner 
                     _this._underlyingSpinner.hide(name);
                 }
-            }), DismissingDelayPeroid);
+            }, DismissingDelayPeroid);
         }
     };
-    SpinnerServiceImpl.decorators = [
-        { type: Injectable }
-    ];
-    /** @nocollapse */
-    SpinnerServiceImpl.ctorParameters = function () { return [
-        { type: NgxSpinnerService }
-    ]; };
+    /** @nocollapse */ SpinnerServiceImpl.ɵfac = function SpinnerServiceImpl_Factory(t) { return new (t || SpinnerServiceImpl)(ɵɵinject(NgxSpinnerService)); };
+    /** @nocollapse */ SpinnerServiceImpl.ɵprov = ɵɵdefineInjectable({ token: SpinnerServiceImpl, factory: SpinnerServiceImpl.ɵfac });
     return SpinnerServiceImpl;
 }());
+/*@__PURE__*/ (function () { ɵsetClassMetadata(SpinnerServiceImpl, [{
+        type: Injectable
+    }], function () { return [{ type: NgxSpinnerService }]; }, null); })();
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
- * @template T
- * @param {?} constructor
- * @return {?}
- */
 function loadingIndicatorDecorator(constructor) {
     return /** @class */ (function (_super) {
         __extends(class_1, _super);
         function class_1() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        /**
-         * @param {...?} args
-         * @return {?}
-         */
-        class_1.prototype.showLoadingIndicator = /**
-         * @param {...?} args
-         * @return {?}
-         */
-        function () {
+        class_1.prototype.showLoadingIndicator = function () {
+            var _a;
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
             }
-            var _a;
             (_a = this.spinner).show.apply(_a, __spread(args));
         };
-        /**
-         * @return {?}
-         */
-        class_1.prototype.hideLoadingIndicator = /**
-         * @return {?}
-         */
-        function () {
+        class_1.prototype.hideLoadingIndicator = function () {
             this.spinner.hide();
         };
-        /**
-         * @param {?} seconds
-         * @return {?}
-         */
-        class_1.prototype.setLoadingIndicatorDelay = /**
-         * @param {?} seconds
-         * @return {?}
-         */
-        function (seconds) {
+        class_1.prototype.setLoadingIndicatorDelay = function (seconds) {
             this.spinner.setDelay(seconds);
         };
         return class_1;
     }(constructor));
 }
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 var NullSpinner = /** @class */ (function () {
     function NullSpinner() {
     }
-    /**
-     * @return {?}
-     */
-    NullSpinner.prototype.show = /**
-     * @return {?}
-     */
-    function () { };
-    /**
-     * @return {?}
-     */
-    NullSpinner.prototype.hide = /**
-     * @return {?}
-     */
-    function () { };
-    /**
-     * @param {?} seconds
-     * @return {?}
-     */
-    NullSpinner.prototype.setDelay = /**
-     * @param {?} seconds
-     * @return {?}
-     */
-    function (seconds) { };
+    NullSpinner.prototype.show = function () { };
+    NullSpinner.prototype.hide = function () { };
+    NullSpinner.prototype.setDelay = function (seconds) { };
     return NullSpinner;
 }());
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+/*
+ * Public API Surface of ngx-spinner
  */
 
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NullSpinner, SpinnerServiceImpl, loadingIndicatorDecorator };

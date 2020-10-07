@@ -2,21 +2,21 @@
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ngx-spinner')) :
     typeof define === 'function' && define.amd ? define('@polpware/ngx-spinner', ['exports', '@angular/core', 'ngx-spinner'], factory) :
     (global = global || self, factory((global.polpware = global.polpware || {}, global.polpware['ngx-spinner'] = {}), global.ng.core, global.ngxSpinner));
-}(this, function (exports, core, ngxSpinner) { 'use strict';
+}(this, (function (exports, core, ngxSpinner) { 'use strict';
 
     /*! *****************************************************************************
-    Copyright (c) Microsoft Corporation. All rights reserved.
-    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-    this file except in compliance with the License. You may obtain a copy of the
-    License at http://www.apache.org/licenses/LICENSE-2.0
+    Copyright (c) Microsoft Corporation.
 
-    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-    MERCHANTABLITY OR NON-INFRINGEMENT.
+    Permission to use, copy, modify, and/or distribute this software for any
+    purpose with or without fee is hereby granted.
 
-    See the Apache Version 2.0 License for specific language governing permissions
-    and limitations under the License.
+    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+    REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+    INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+    LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+    OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+    PERFORMANCE OF THIS SOFTWARE.
     ***************************************************************************** */
     /* global Reflect, Promise */
 
@@ -31,6 +31,103 @@
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    }
+
+    var __assign = function() {
+        __assign = Object.assign || function __assign(t) {
+            for (var s, i = 1, n = arguments.length; i < n; i++) {
+                s = arguments[i];
+                for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+            }
+            return t;
+        };
+        return __assign.apply(this, arguments);
+    };
+
+    function __rest(s, e) {
+        var t = {};
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+            t[p] = s[p];
+        if (s != null && typeof Object.getOwnPropertySymbols === "function")
+            for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+                if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                    t[p[i]] = s[p[i]];
+            }
+        return t;
+    }
+
+    function __decorate(decorators, target, key, desc) {
+        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+        return c > 3 && r && Object.defineProperty(target, key, r), r;
+    }
+
+    function __param(paramIndex, decorator) {
+        return function (target, key) { decorator(target, key, paramIndex); }
+    }
+
+    function __metadata(metadataKey, metadataValue) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+    }
+
+    function __awaiter(thisArg, _arguments, P, generator) {
+        function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+    }
+
+    function __generator(thisArg, body) {
+        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+        function verb(n) { return function (v) { return step([n, v]); }; }
+        function step(op) {
+            if (f) throw new TypeError("Generator is already executing.");
+            while (_) try {
+                if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+                if (y = 0, t) op = [op[0] & 2, t.value];
+                switch (op[0]) {
+                    case 0: case 1: t = op; break;
+                    case 4: _.label++; return { value: op[1], done: false };
+                    case 5: _.label++; y = op[1]; op = [0]; continue;
+                    case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                    default:
+                        if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                        if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                        if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                        if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                        if (t[2]) _.ops.pop();
+                        _.trys.pop(); continue;
+                }
+                op = body.call(thisArg, _);
+            } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+            if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+        }
+    }
+
+    function __createBinding(o, m, k, k2) {
+        if (k2 === undefined) k2 = k;
+        o[k2] = m[k];
+    }
+
+    function __exportStar(m, exports) {
+        for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) exports[p] = m[p];
+    }
+
+    function __values(o) {
+        var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+        if (m) return m.call(o);
+        if (o && typeof o.length === "number") return {
+            next: function () {
+                if (o && i >= o.length) o = void 0;
+                return { value: o && o[i++], done: !o };
+            }
+        };
+        throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
     }
 
     function __read(o, n) {
@@ -56,15 +153,78 @@
         return ar;
     }
 
-    /**
-     * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
-     */
-    /** @type {?} */
+    function __spreadArrays() {
+        for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+        for (var r = Array(s), k = 0, i = 0; i < il; i++)
+            for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+                r[k] = a[j];
+        return r;
+    };
+
+    function __await(v) {
+        return this instanceof __await ? (this.v = v, this) : new __await(v);
+    }
+
+    function __asyncGenerator(thisArg, _arguments, generator) {
+        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+        var g = generator.apply(thisArg, _arguments || []), i, q = [];
+        return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+        function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+        function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+        function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+        function fulfill(value) { resume("next", value); }
+        function reject(value) { resume("throw", value); }
+        function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+    }
+
+    function __asyncDelegator(o) {
+        var i, p;
+        return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+        function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
+    }
+
+    function __asyncValues(o) {
+        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+        var m = o[Symbol.asyncIterator], i;
+        return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+        function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+        function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+    }
+
+    function __makeTemplateObject(cooked, raw) {
+        if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+        return cooked;
+    };
+
+    function __importStar(mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+        result.default = mod;
+        return result;
+    }
+
+    function __importDefault(mod) {
+        return (mod && mod.__esModule) ? mod : { default: mod };
+    }
+
+    function __classPrivateFieldGet(receiver, privateMap) {
+        if (!privateMap.has(receiver)) {
+            throw new TypeError("attempted to get private field on non-instance");
+        }
+        return privateMap.get(receiver);
+    }
+
+    function __classPrivateFieldSet(receiver, privateMap, value) {
+        if (!privateMap.has(receiver)) {
+            throw new TypeError("attempted to set private field on non-instance");
+        }
+        privateMap.set(receiver, value);
+        return value;
+    }
+
     var PRIMARY_SPINNER = 'primary';
-    /** @type {?} */
     var DismissingDelayPeroid = 300;
-    /** @type {?} */
     var DefaultShowingDelayPeroid = 500;
     var SpinnerServiceImpl = /** @class */ (function () {
         function SpinnerServiceImpl(_underlyingSpinner) {
@@ -77,55 +237,19 @@
             this.startToListenSpinner();
         }
         // Note that we do not need to stop it, as this is a service starting in the beginning.
-        // Note that we do not need to stop it, as this is a service starting in the beginning.
-        /**
-         * @param {?=} name
-         * @return {?}
-         */
-        SpinnerServiceImpl.prototype.startToListenSpinner = 
-        // Note that we do not need to stop it, as this is a service starting in the beginning.
-        /**
-         * @param {?=} name
-         * @return {?}
-         */
-        function (name) {
+        SpinnerServiceImpl.prototype.startToListenSpinner = function (name) {
             var _this = this;
             if (name === void 0) { name = PRIMARY_SPINNER; }
             // Set up the listener
-            this._underlyingSpinner.getSpinner(PRIMARY_SPINNER).subscribe((/**
-             * @param {?} x
-             * @return {?}
-             */
-            function (x) {
+            this._underlyingSpinner.getSpinner(PRIMARY_SPINNER).subscribe(function (x) {
                 _this._spinnerState = x.show;
-            }));
+            });
         };
-        /**
-         * @param {?} seconds
-         * @return {?}
-         */
-        SpinnerServiceImpl.prototype.setDelay = /**
-         * @param {?} seconds
-         * @return {?}
-         */
-        function (seconds) {
+        SpinnerServiceImpl.prototype.setDelay = function (seconds) {
             this._showingDelay = seconds * 1000;
         };
         // Override
-        // Override
-        /**
-         * @param {?=} title
-         * @param {?=} name
-         * @return {?}
-         */
-        SpinnerServiceImpl.prototype.show = 
-        // Override
-        /**
-         * @param {?=} title
-         * @param {?=} name
-         * @return {?}
-         */
-        function (title, name) {
+        SpinnerServiceImpl.prototype.show = function (title, name) {
             var _this = this;
             if (title === void 0) { title = 'Loading ...'; }
             if (name === void 0) { name = PRIMARY_SPINNER; }
@@ -159,27 +283,16 @@
                 return;
             }
             // Otherwise, schdule to show the spinner.
-            this._showingTimer = setTimeout((/**
-             * @return {?}
-             */
-            function () {
+            this._showingTimer = setTimeout(function () {
                 console.log('show --- run');
                 if (_this._showingTimer) {
                     // Clean up the timer
                     _this._showingTimer = 0;
                     _this._underlyingSpinner.show(name);
                 }
-            }), this._showingDelay);
+            }, this._showingDelay);
         };
-        /**
-         * @param {?=} name
-         * @return {?}
-         */
-        SpinnerServiceImpl.prototype.hide = /**
-         * @param {?=} name
-         * @return {?}
-         */
-        function (name) {
+        SpinnerServiceImpl.prototype.hide = function (name) {
             var _this = this;
             if (name === void 0) { name = PRIMARY_SPINNER; }
             this._referenceCounter--;
@@ -200,10 +313,7 @@
             if (this._dismissingTimer) {
                 console.log('hide --- already shceduled');
                 clearTimeout(this._dismissingTimer);
-                this._dismissingTimer = setTimeout((/**
-                 * @return {?}
-                 */
-                function () {
+                this._dismissingTimer = setTimeout(function () {
                     console.log('hide -run (1)');
                     if (_this._dismissingTimer) {
                         console.log('live');
@@ -212,16 +322,13 @@
                         // Dismiss the spinner 
                         _this._underlyingSpinner.hide();
                     }
-                }), DismissingDelayPeroid);
+                }, DismissingDelayPeroid);
                 return;
             }
             // Schedule to dismiss the spinner
             if (this._spinnerState) {
                 console.log('hide --- schedule');
-                this._dismissingTimer = setTimeout((/**
-                 * @return {?}
-                 */
-                function () {
+                this._dismissingTimer = setTimeout(function () {
                     console.log('hide -run (2)');
                     if (_this._dismissingTimer) {
                         console.log('live');
@@ -229,104 +336,47 @@
                         // Dismiss the spinner 
                         _this._underlyingSpinner.hide(name);
                     }
-                }), DismissingDelayPeroid);
+                }, DismissingDelayPeroid);
             }
         };
-        SpinnerServiceImpl.decorators = [
-            { type: core.Injectable }
-        ];
-        /** @nocollapse */
-        SpinnerServiceImpl.ctorParameters = function () { return [
-            { type: ngxSpinner.NgxSpinnerService }
-        ]; };
+        /** @nocollapse */ SpinnerServiceImpl.ɵfac = function SpinnerServiceImpl_Factory(t) { return new (t || SpinnerServiceImpl)(core.ɵɵinject(ngxSpinner.NgxSpinnerService)); };
+        /** @nocollapse */ SpinnerServiceImpl.ɵprov = core.ɵɵdefineInjectable({ token: SpinnerServiceImpl, factory: SpinnerServiceImpl.ɵfac });
         return SpinnerServiceImpl;
     }());
+    /*@__PURE__*/ (function () { core.ɵsetClassMetadata(SpinnerServiceImpl, [{
+            type: core.Injectable
+        }], function () { return [{ type: ngxSpinner.NgxSpinnerService }]; }, null); })();
 
-    /**
-     * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
-     */
-    /**
-     * @template T
-     * @param {?} constructor
-     * @return {?}
-     */
     function loadingIndicatorDecorator(constructor) {
         return /** @class */ (function (_super) {
             __extends(class_1, _super);
             function class_1() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            /**
-             * @param {...?} args
-             * @return {?}
-             */
-            class_1.prototype.showLoadingIndicator = /**
-             * @param {...?} args
-             * @return {?}
-             */
-            function () {
+            class_1.prototype.showLoadingIndicator = function () {
+                var _a;
                 var args = [];
                 for (var _i = 0; _i < arguments.length; _i++) {
                     args[_i] = arguments[_i];
                 }
-                var _a;
                 (_a = this.spinner).show.apply(_a, __spread(args));
             };
-            /**
-             * @return {?}
-             */
-            class_1.prototype.hideLoadingIndicator = /**
-             * @return {?}
-             */
-            function () {
+            class_1.prototype.hideLoadingIndicator = function () {
                 this.spinner.hide();
             };
-            /**
-             * @param {?} seconds
-             * @return {?}
-             */
-            class_1.prototype.setLoadingIndicatorDelay = /**
-             * @param {?} seconds
-             * @return {?}
-             */
-            function (seconds) {
+            class_1.prototype.setLoadingIndicatorDelay = function (seconds) {
                 this.spinner.setDelay(seconds);
             };
             return class_1;
         }(constructor));
     }
 
-    /**
-     * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
-     */
     var NullSpinner = /** @class */ (function () {
         function NullSpinner() {
         }
-        /**
-         * @return {?}
-         */
-        NullSpinner.prototype.show = /**
-         * @return {?}
-         */
-        function () { };
-        /**
-         * @return {?}
-         */
-        NullSpinner.prototype.hide = /**
-         * @return {?}
-         */
-        function () { };
-        /**
-         * @param {?} seconds
-         * @return {?}
-         */
-        NullSpinner.prototype.setDelay = /**
-         * @param {?} seconds
-         * @return {?}
-         */
-        function (seconds) { };
+        NullSpinner.prototype.show = function () { };
+        NullSpinner.prototype.hide = function () { };
+        NullSpinner.prototype.setDelay = function (seconds) { };
         return NullSpinner;
     }());
 
@@ -336,5 +386,5 @@
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
-}));
+})));
 //# sourceMappingURL=polpware-ngx-spinner.umd.js.map
