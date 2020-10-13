@@ -8,8 +8,10 @@ export declare class SpinnerServiceImpl implements ISpinnerService {
     private _dismissingTimer;
     private _spinnerState;
     private _referenceCounter;
+    private _subr;
     constructor(_underlyingSpinner: NgxSpinnerService);
     startToListenSpinner(name?: string): void;
+    stopListener(name?: string): void;
     setDelay(seconds: number): void;
     show(title?: string, name?: string): void;
     hide(name?: string): void;

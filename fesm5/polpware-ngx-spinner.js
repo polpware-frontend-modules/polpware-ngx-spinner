@@ -5,6 +5,8 @@ import { __extends, __spread } from 'tslib';
 var PRIMARY_SPINNER = 'primary';
 var DismissingDelayPeroid = 300;
 var DefaultShowingDelayPeroid = 500;
+/* Note that on purpose we do not turn this one into a singular service.
+ * Therefore, we are able to create many such services for each component */
 var SpinnerServiceImpl = /** @class */ (function () {
     function SpinnerServiceImpl(_underlyingSpinner) {
         this._underlyingSpinner = _underlyingSpinner;
@@ -13,16 +15,19 @@ var SpinnerServiceImpl = /** @class */ (function () {
         this._showingDelay = DefaultShowingDelayPeroid;
         this._dismissingTimer = 0;
         this._spinnerState = false;
-        this.startToListenSpinner();
     }
     // Note that we do not need to stop it, as this is a service starting in the beginning.
     SpinnerServiceImpl.prototype.startToListenSpinner = function (name) {
         var _this = this;
         if (name === void 0) { name = PRIMARY_SPINNER; }
         // Set up the listener
-        this._underlyingSpinner.getSpinner(PRIMARY_SPINNER).subscribe(function (x) {
+        this._subr = this._underlyingSpinner.getSpinner(name).subscribe(function (x) {
             _this._spinnerState = x.show;
         });
+    };
+    SpinnerServiceImpl.prototype.stopListener = function (name) {
+        if (name === void 0) { name = PRIMARY_SPINNER; }
+        this._subr && this._subr.unsubscribe();
     };
     SpinnerServiceImpl.prototype.setDelay = function (seconds) {
         this._showingDelay = seconds * 1000;
