@@ -325,7 +325,7 @@
                         // Clean up the timer
                         _this._dismissingTimer = 0;
                         // Dismiss the spinner 
-                        _this._underlyingSpinner.hide();
+                        _this._underlyingSpinner.hide(name);
                     }
                 }, DismissingDelayPeroid);
                 return;

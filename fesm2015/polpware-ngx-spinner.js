@@ -95,7 +95,7 @@ class SpinnerServiceImpl {
                     // Clean up the timer
                     this._dismissingTimer = 0;
                     // Dismiss the spinner 
-                    this._underlyingSpinner.hide();
+                    this._underlyingSpinner.hide(name);
                 }
             }, DismissingDelayPeroid);
             return;
