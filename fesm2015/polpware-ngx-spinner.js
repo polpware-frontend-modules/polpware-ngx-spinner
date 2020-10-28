@@ -30,16 +30,13 @@ class SpinnerServiceImpl {
     }
     // Override
     show(title = 'Loading ...', name = PRIMARY_SPINNER) {
-        console.log('Asked to show spinner...');
         this._referenceCounter++;
         // If there is one already, use it.
         if (this._spinnerState) {
-            console.log('show --- one has been scheduled');
             // However, we need to cancel the dismiss timer.
             // It is safe, because we expect that "hide" is to be called
             // sometime later from this moment on.
             if (this._dismissingTimer) {
-                console.log('show --- cleaning out dismisming timer');
                 clearTimeout(this._dismissingTimer);
                 this._dismissingTimer = 0;
             }
@@ -49,19 +46,16 @@ class SpinnerServiceImpl {
         // we just need to clear the scheduler.
         // Please refer to the above for the reason.
         if (this._dismissingTimer) {
-            console.log('show --- cleaning out dismisming timer (2)');
             clearTimeout(this._dismissingTimer);
             this._dismissingTimer = 0;
         }
         // If we have already scheduled to show the spinner, we just
         // use this schedule. 
         if (this._showingTimer) {
-            console.log('show --- already scheduled one');
             return;
         }
         // Otherwise, schdule to show the spinner.
         this._showingTimer = setTimeout(() => {
-            console.log('show --- run');
             if (this._showingTimer) {
                 // Clean up the timer
                 this._showingTimer = 0;
@@ -72,12 +66,10 @@ class SpinnerServiceImpl {
     hide(name = PRIMARY_SPINNER) {
         this._referenceCounter--;
         if (this._referenceCounter > 0) {
-            console.log('hide --- reference counter still greater than 0');
             return;
         }
         // If the spinner has not been scheduled.
         if (this._showingTimer) {
-            console.log('hide --- remove the show scheduler');
             clearTimeout(this._showingTimer);
             this._showingTimer = 0;
             // Done
@@ -86,12 +78,9 @@ class SpinnerServiceImpl {
         // If have scheduled to dismiss the spinner,
         // we better we schedule again.
         if (this._dismissingTimer) {
-            console.log('hide --- already shceduled');
             clearTimeout(this._dismissingTimer);
             this._dismissingTimer = setTimeout(() => {
-                console.log('hide -run (1)');
                 if (this._dismissingTimer) {
-                    console.log('live');
                     // Clean up the timer
                     this._dismissingTimer = 0;
                     // Dismiss the spinner 
@@ -102,11 +91,8 @@ class SpinnerServiceImpl {
         }
         // Schedule to dismiss the spinner
         if (this._spinnerState) {
-            console.log('hide --- schedule');
             this._dismissingTimer = setTimeout(() => {
-                console.log('hide -run (2)');
                 if (this._dismissingTimer) {
-                    console.log('live');
                     this._dismissingTimer = 0;
                     // Dismiss the spinner 
                     this._underlyingSpinner.hide(name);
