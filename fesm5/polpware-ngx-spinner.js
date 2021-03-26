@@ -1,5 +1,6 @@
 import { __extends, __spread } from 'tslib';
 import { ɵɵinject, ɵɵdefineInjectable, ɵsetClassMetadata, Injectable } from '@angular/core';
+import { NgxLoggerImpl } from '@polpware/ngx-logger';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 var PRIMARY_SPINNER = 'primary';
@@ -21,13 +22,17 @@ var SpinnerServiceBase = /** @class */ (function () {
         var _this = this;
         if (title === void 0) { title = 'Loading ...'; }
         if (name === void 0) { name = PRIMARY_SPINNER; }
+        this.logger.debug('Spinner requested to show');
         this._referenceCounter++;
+        this.logger.debug('Reference counter in show:' + this._referenceCounter);
         // If there is one already, use it.
         if (this.spinnerState) {
+            this.logger.debug('Existing spinner used');
             // However, we need to cancel the dismiss timer.
             // It is safe, because we expect that "hide" is to be called
             // sometime later from this moment on.
             if (this._dismissingTimer) {
+                this.logger.debug('Dismissing timer cleaned 1');
                 clearTimeout(this._dismissingTimer);
                 this._dismissingTimer = 0;
             }
@@ -37,14 +42,17 @@ var SpinnerServiceBase = /** @class */ (function () {
         // we just need to clear the scheduler.
         // Please refer to the above for the reason.
         if (this._dismissingTimer) {
+            this.logger.debug('Dismissing timer cleaned 2');
             clearTimeout(this._dismissingTimer);
             this._dismissingTimer = 0;
         }
         // If we have already scheduled to show the spinner, we just
         // use this schedule. 
         if (this._showingTimer) {
+            this.logger.debug('Already scheduled to show');
             return;
         }
+        this.logger.debug('Schedule for show');
         // Otherwise, schdule to show the spinner.
         this._showingTimer = setTimeout(function () {
             if (_this._showingTimer) {
@@ -57,12 +65,15 @@ var SpinnerServiceBase = /** @class */ (function () {
     SpinnerServiceBase.prototype.hide = function (name) {
         var _this = this;
         if (name === void 0) { name = PRIMARY_SPINNER; }
+        this.logger.debug('Spinner requested to hide');
         this._referenceCounter--;
+        this.logger.debug('Reference counter in hide:' + this._referenceCounter);
         if (this._referenceCounter > 0) {
             return;
         }
         // If the spinner has not been scheduled.
         if (this._showingTimer) {
+            this.logger.debug('Showed timer cleaned');
             clearTimeout(this._showingTimer);
             this._showingTimer = 0;
             // Done
@@ -71,6 +82,7 @@ var SpinnerServiceBase = /** @class */ (function () {
         // If have scheduled to dismiss the spinner,
         // we better we schedule again.
         if (this._dismissingTimer) {
+            this.logger.debug('Reschedule for dismissing');
             clearTimeout(this._dismissingTimer);
             this._dismissingTimer = setTimeout(function () {
                 if (_this._dismissingTimer) {
@@ -84,6 +96,7 @@ var SpinnerServiceBase = /** @class */ (function () {
         }
         // Schedule to dismiss the spinner
         if (this.spinnerState) {
+            this.logger.debug('Schedule for dismissing');
             this._dismissingTimer = setTimeout(function () {
                 if (_this._dismissingTimer) {
                     _this._dismissingTimer = 0;
@@ -101,9 +114,10 @@ var PRIMARY_SPINNER$1 = 'primary';
  * Therefore, we are able to create many such services for each component */
 var SpinnerServiceImpl = /** @class */ (function (_super) {
     __extends(SpinnerServiceImpl, _super);
-    function SpinnerServiceImpl(underlyingSpinner) {
+    function SpinnerServiceImpl(underlyingSpinner, logger) {
         var _this = _super.call(this) || this;
         _this.underlyingSpinner = underlyingSpinner;
+        _this.logger = logger;
         return _this;
     }
     // Note that we do not need to stop it, as this is a service starting in the beginning.
@@ -119,13 +133,13 @@ var SpinnerServiceImpl = /** @class */ (function (_super) {
         if (name === void 0) { name = PRIMARY_SPINNER$1; }
         this._subr && this._subr.unsubscribe();
     };
-    /** @nocollapse */ SpinnerServiceImpl.ɵfac = function SpinnerServiceImpl_Factory(t) { return new (t || SpinnerServiceImpl)(ɵɵinject(NgxSpinnerService)); };
+    /** @nocollapse */ SpinnerServiceImpl.ɵfac = function SpinnerServiceImpl_Factory(t) { return new (t || SpinnerServiceImpl)(ɵɵinject(NgxSpinnerService), ɵɵinject(NgxLoggerImpl)); };
     /** @nocollapse */ SpinnerServiceImpl.ɵprov = ɵɵdefineInjectable({ token: SpinnerServiceImpl, factory: SpinnerServiceImpl.ɵfac });
     return SpinnerServiceImpl;
 }(SpinnerServiceBase));
 /*@__PURE__*/ (function () { ɵsetClassMetadata(SpinnerServiceImpl, [{
         type: Injectable
-    }], function () { return [{ type: NgxSpinnerService }]; }, null); })();
+    }], function () { return [{ type: NgxSpinnerService }, { type: NgxLoggerImpl }]; }, null); })();
 
 function loadingIndicatorDecorator(constructor) {
     return /** @class */ (function (_super) {

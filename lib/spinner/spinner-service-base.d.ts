@@ -1,3 +1,4 @@
+import { NgxLoggerImpl } from '@polpware/ngx-logger';
 import { ISpinnerService } from './spinner.interface';
 export interface IUnderlyingSpinner {
     show(name?: any): any;
@@ -5,6 +6,7 @@ export interface IUnderlyingSpinner {
 }
 export declare abstract class SpinnerServiceBase implements ISpinnerService {
     protected underlyingSpinner: IUnderlyingSpinner;
+    protected logger: NgxLoggerImpl;
     private _showingTimer;
     private _showingDelay;
     private _dismissingTimer;

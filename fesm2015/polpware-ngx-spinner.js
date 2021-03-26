@@ -1,4 +1,5 @@
 import { ɵɵinject, ɵɵdefineInjectable, ɵsetClassMetadata, Injectable } from '@angular/core';
+import { NgxLoggerImpl } from '@polpware/ngx-logger';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 const PRIMARY_SPINNER = 'primary';
@@ -17,13 +18,17 @@ class SpinnerServiceBase {
     }
     // Override
     show(title = 'Loading ...', name = PRIMARY_SPINNER) {
+        this.logger.debug('Spinner requested to show');
         this._referenceCounter++;
+        this.logger.debug('Reference counter in show:' + this._referenceCounter);
         // If there is one already, use it.
         if (this.spinnerState) {
+            this.logger.debug('Existing spinner used');
             // However, we need to cancel the dismiss timer.
             // It is safe, because we expect that "hide" is to be called
             // sometime later from this moment on.
             if (this._dismissingTimer) {
+                this.logger.debug('Dismissing timer cleaned 1');
                 clearTimeout(this._dismissingTimer);
                 this._dismissingTimer = 0;
             }
@@ -33,14 +38,17 @@ class SpinnerServiceBase {
         // we just need to clear the scheduler.
         // Please refer to the above for the reason.
         if (this._dismissingTimer) {
+            this.logger.debug('Dismissing timer cleaned 2');
             clearTimeout(this._dismissingTimer);
             this._dismissingTimer = 0;
         }
         // If we have already scheduled to show the spinner, we just
         // use this schedule. 
         if (this._showingTimer) {
+            this.logger.debug('Already scheduled to show');
             return;
         }
+        this.logger.debug('Schedule for show');
         // Otherwise, schdule to show the spinner.
         this._showingTimer = setTimeout(() => {
             if (this._showingTimer) {
@@ -51,12 +59,15 @@ class SpinnerServiceBase {
         }, this._showingDelay);
     }
     hide(name = PRIMARY_SPINNER) {
+        this.logger.debug('Spinner requested to hide');
         this._referenceCounter--;
+        this.logger.debug('Reference counter in hide:' + this._referenceCounter);
         if (this._referenceCounter > 0) {
             return;
         }
         // If the spinner has not been scheduled.
         if (this._showingTimer) {
+            this.logger.debug('Showed timer cleaned');
             clearTimeout(this._showingTimer);
             this._showingTimer = 0;
             // Done
@@ -65,6 +76,7 @@ class SpinnerServiceBase {
         // If have scheduled to dismiss the spinner,
         // we better we schedule again.
         if (this._dismissingTimer) {
+            this.logger.debug('Reschedule for dismissing');
             clearTimeout(this._dismissingTimer);
             this._dismissingTimer = setTimeout(() => {
                 if (this._dismissingTimer) {
@@ -78,6 +90,7 @@ class SpinnerServiceBase {
         }
         // Schedule to dismiss the spinner
         if (this.spinnerState) {
+            this.logger.debug('Schedule for dismissing');
             this._dismissingTimer = setTimeout(() => {
                 if (this._dismissingTimer) {
                     this._dismissingTimer = 0;
@@ -93,9 +106,10 @@ const PRIMARY_SPINNER$1 = 'primary';
 /* Note that on purpose we do not turn this one into a singular service.
  * Therefore, we are able to create many such services for each component */
 class SpinnerServiceImpl extends SpinnerServiceBase {
-    constructor(underlyingSpinner) {
+    constructor(underlyingSpinner, logger) {
         super();
         this.underlyingSpinner = underlyingSpinner;
+        this.logger = logger;
     }
     // Note that we do not need to stop it, as this is a service starting in the beginning.
     startToListenSpinner(name = PRIMARY_SPINNER$1) {
@@ -108,11 +122,11 @@ class SpinnerServiceImpl extends SpinnerServiceBase {
         this._subr && this._subr.unsubscribe();
     }
 }
-/** @nocollapse */ SpinnerServiceImpl.ɵfac = function SpinnerServiceImpl_Factory(t) { return new (t || SpinnerServiceImpl)(ɵɵinject(NgxSpinnerService)); };
+/** @nocollapse */ SpinnerServiceImpl.ɵfac = function SpinnerServiceImpl_Factory(t) { return new (t || SpinnerServiceImpl)(ɵɵinject(NgxSpinnerService), ɵɵinject(NgxLoggerImpl)); };
 /** @nocollapse */ SpinnerServiceImpl.ɵprov = ɵɵdefineInjectable({ token: SpinnerServiceImpl, factory: SpinnerServiceImpl.ɵfac });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(SpinnerServiceImpl, [{
         type: Injectable
-    }], function () { return [{ type: NgxSpinnerService }]; }, null); })();
+    }], function () { return [{ type: NgxSpinnerService }, { type: NgxLoggerImpl }]; }, null); })();
 
 function loadingIndicatorDecorator(constructor) {
     return class extends constructor {
