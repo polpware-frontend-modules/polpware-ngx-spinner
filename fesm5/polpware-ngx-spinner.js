@@ -1,45 +1,29 @@
+import { __extends, __spread } from 'tslib';
 import { ɵɵinject, ɵɵdefineInjectable, ɵsetClassMetadata, Injectable } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { __extends, __spread } from 'tslib';
 
 var PRIMARY_SPINNER = 'primary';
 var DismissingDelayPeroid = 300;
 var DefaultShowingDelayPeroid = 500;
-/* Note that on purpose we do not turn this one into a singular service.
- * Therefore, we are able to create many such services for each component */
-var SpinnerServiceImpl = /** @class */ (function () {
-    function SpinnerServiceImpl(_underlyingSpinner) {
-        this._underlyingSpinner = _underlyingSpinner;
+var SpinnerServiceBase = /** @class */ (function () {
+    function SpinnerServiceBase() {
         this._referenceCounter = 0;
         this._showingTimer = 0;
         this._showingDelay = DefaultShowingDelayPeroid;
         this._dismissingTimer = 0;
-        this._spinnerState = false;
+        this.spinnerState = false;
     }
-    // Note that we do not need to stop it, as this is a service starting in the beginning.
-    SpinnerServiceImpl.prototype.startToListenSpinner = function (name) {
-        var _this = this;
-        if (name === void 0) { name = PRIMARY_SPINNER; }
-        // Set up the listener
-        this._subr = this._underlyingSpinner.getSpinner(name).subscribe(function (x) {
-            _this._spinnerState = x.show;
-        });
-    };
-    SpinnerServiceImpl.prototype.stopListener = function (name) {
-        if (name === void 0) { name = PRIMARY_SPINNER; }
-        this._subr && this._subr.unsubscribe();
-    };
-    SpinnerServiceImpl.prototype.setDelay = function (seconds) {
+    SpinnerServiceBase.prototype.setDelay = function (seconds) {
         this._showingDelay = seconds * 1000;
     };
     // Override
-    SpinnerServiceImpl.prototype.show = function (title, name) {
+    SpinnerServiceBase.prototype.show = function (title, name) {
         var _this = this;
         if (title === void 0) { title = 'Loading ...'; }
         if (name === void 0) { name = PRIMARY_SPINNER; }
         this._referenceCounter++;
         // If there is one already, use it.
-        if (this._spinnerState) {
+        if (this.spinnerState) {
             // However, we need to cancel the dismiss timer.
             // It is safe, because we expect that "hide" is to be called
             // sometime later from this moment on.
@@ -66,11 +50,11 @@ var SpinnerServiceImpl = /** @class */ (function () {
             if (_this._showingTimer) {
                 // Clean up the timer
                 _this._showingTimer = 0;
-                _this._underlyingSpinner.show(name);
+                _this.underlyingSpinner.show(name);
             }
         }, this._showingDelay);
     };
-    SpinnerServiceImpl.prototype.hide = function (name) {
+    SpinnerServiceBase.prototype.hide = function (name) {
         var _this = this;
         if (name === void 0) { name = PRIMARY_SPINNER; }
         this._referenceCounter--;
@@ -93,26 +77,52 @@ var SpinnerServiceImpl = /** @class */ (function () {
                     // Clean up the timer
                     _this._dismissingTimer = 0;
                     // Dismiss the spinner 
-                    _this._underlyingSpinner.hide(name);
+                    _this.underlyingSpinner.hide(name);
                 }
             }, DismissingDelayPeroid);
             return;
         }
         // Schedule to dismiss the spinner
-        if (this._spinnerState) {
+        if (this.spinnerState) {
             this._dismissingTimer = setTimeout(function () {
                 if (_this._dismissingTimer) {
                     _this._dismissingTimer = 0;
                     // Dismiss the spinner 
-                    _this._underlyingSpinner.hide(name);
+                    _this.underlyingSpinner.hide(name);
                 }
             }, DismissingDelayPeroid);
         }
     };
+    return SpinnerServiceBase;
+}());
+
+var PRIMARY_SPINNER$1 = 'primary';
+/* Note that on purpose we do not turn this one into a singular service.
+ * Therefore, we are able to create many such services for each component */
+var SpinnerServiceImpl = /** @class */ (function (_super) {
+    __extends(SpinnerServiceImpl, _super);
+    function SpinnerServiceImpl(underlyingSpinner) {
+        var _this = _super.call(this) || this;
+        _this.underlyingSpinner = underlyingSpinner;
+        return _this;
+    }
+    // Note that we do not need to stop it, as this is a service starting in the beginning.
+    SpinnerServiceImpl.prototype.startToListenSpinner = function (name) {
+        var _this = this;
+        if (name === void 0) { name = PRIMARY_SPINNER$1; }
+        // Set up the listener
+        this._subr = this.underlyingSpinner.getSpinner(name).subscribe(function (x) {
+            _this.spinnerState = x.show;
+        });
+    };
+    SpinnerServiceImpl.prototype.stopListener = function (name) {
+        if (name === void 0) { name = PRIMARY_SPINNER$1; }
+        this._subr && this._subr.unsubscribe();
+    };
     /** @nocollapse */ SpinnerServiceImpl.ɵfac = function SpinnerServiceImpl_Factory(t) { return new (t || SpinnerServiceImpl)(ɵɵinject(NgxSpinnerService)); };
     /** @nocollapse */ SpinnerServiceImpl.ɵprov = ɵɵdefineInjectable({ token: SpinnerServiceImpl, factory: SpinnerServiceImpl.ɵfac });
     return SpinnerServiceImpl;
-}());
+}(SpinnerServiceBase));
 /*@__PURE__*/ (function () { ɵsetClassMetadata(SpinnerServiceImpl, [{
         type: Injectable
     }], function () { return [{ type: NgxSpinnerService }]; }, null); })();
@@ -158,5 +168,5 @@ var NullSpinner = /** @class */ (function () {
  * Generated bundle index. Do not edit.
  */
 
-export { NullSpinner, SpinnerServiceImpl, loadingIndicatorDecorator };
+export { NullSpinner, SpinnerServiceBase, SpinnerServiceImpl, loadingIndicatorDecorator };
 //# sourceMappingURL=polpware-ngx-spinner.js.map

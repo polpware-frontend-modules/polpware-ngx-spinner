@@ -4,26 +4,13 @@ import { NgxSpinnerService } from 'ngx-spinner';
 const PRIMARY_SPINNER = 'primary';
 const DismissingDelayPeroid = 300;
 const DefaultShowingDelayPeroid = 500;
-/* Note that on purpose we do not turn this one into a singular service.
- * Therefore, we are able to create many such services for each component */
-class SpinnerServiceImpl {
-    constructor(_underlyingSpinner) {
-        this._underlyingSpinner = _underlyingSpinner;
+class SpinnerServiceBase {
+    constructor() {
         this._referenceCounter = 0;
         this._showingTimer = 0;
         this._showingDelay = DefaultShowingDelayPeroid;
         this._dismissingTimer = 0;
-        this._spinnerState = false;
-    }
-    // Note that we do not need to stop it, as this is a service starting in the beginning.
-    startToListenSpinner(name = PRIMARY_SPINNER) {
-        // Set up the listener
-        this._subr = this._underlyingSpinner.getSpinner(name).subscribe(x => {
-            this._spinnerState = x.show;
-        });
-    }
-    stopListener(name = PRIMARY_SPINNER) {
-        this._subr && this._subr.unsubscribe();
+        this.spinnerState = false;
     }
     setDelay(seconds) {
         this._showingDelay = seconds * 1000;
@@ -32,7 +19,7 @@ class SpinnerServiceImpl {
     show(title = 'Loading ...', name = PRIMARY_SPINNER) {
         this._referenceCounter++;
         // If there is one already, use it.
-        if (this._spinnerState) {
+        if (this.spinnerState) {
             // However, we need to cancel the dismiss timer.
             // It is safe, because we expect that "hide" is to be called
             // sometime later from this moment on.
@@ -59,7 +46,7 @@ class SpinnerServiceImpl {
             if (this._showingTimer) {
                 // Clean up the timer
                 this._showingTimer = 0;
-                this._underlyingSpinner.show(name);
+                this.underlyingSpinner.show(name);
             }
         }, this._showingDelay);
     }
@@ -84,21 +71,41 @@ class SpinnerServiceImpl {
                     // Clean up the timer
                     this._dismissingTimer = 0;
                     // Dismiss the spinner 
-                    this._underlyingSpinner.hide(name);
+                    this.underlyingSpinner.hide(name);
                 }
             }, DismissingDelayPeroid);
             return;
         }
         // Schedule to dismiss the spinner
-        if (this._spinnerState) {
+        if (this.spinnerState) {
             this._dismissingTimer = setTimeout(() => {
                 if (this._dismissingTimer) {
                     this._dismissingTimer = 0;
                     // Dismiss the spinner 
-                    this._underlyingSpinner.hide(name);
+                    this.underlyingSpinner.hide(name);
                 }
             }, DismissingDelayPeroid);
         }
+    }
+}
+
+const PRIMARY_SPINNER$1 = 'primary';
+/* Note that on purpose we do not turn this one into a singular service.
+ * Therefore, we are able to create many such services for each component */
+class SpinnerServiceImpl extends SpinnerServiceBase {
+    constructor(underlyingSpinner) {
+        super();
+        this.underlyingSpinner = underlyingSpinner;
+    }
+    // Note that we do not need to stop it, as this is a service starting in the beginning.
+    startToListenSpinner(name = PRIMARY_SPINNER$1) {
+        // Set up the listener
+        this._subr = this.underlyingSpinner.getSpinner(name).subscribe(x => {
+            this.spinnerState = x.show;
+        });
+    }
+    stopListener(name = PRIMARY_SPINNER$1) {
+        this._subr && this._subr.unsubscribe();
     }
 }
 /** @nocollapse */ SpinnerServiceImpl.ɵfac = function SpinnerServiceImpl_Factory(t) { return new (t || SpinnerServiceImpl)(ɵɵinject(NgxSpinnerService)); };
@@ -135,5 +142,5 @@ class NullSpinner {
  * Generated bundle index. Do not edit.
  */
 
-export { NullSpinner, SpinnerServiceImpl, loadingIndicatorDecorator };
+export { NullSpinner, SpinnerServiceBase, SpinnerServiceImpl, loadingIndicatorDecorator };
 //# sourceMappingURL=polpware-ngx-spinner.js.map
