@@ -55,6 +55,7 @@ class SpinnerServiceBase {
                 // Clean up the timer
                 this._showingTimer = 0;
                 this.underlyingSpinner.show(name);
+                this.spinnerState = true;
             }
         }, this._showingDelay);
     }
@@ -96,6 +97,7 @@ class SpinnerServiceBase {
                     this._dismissingTimer = 0;
                     // Dismiss the spinner 
                     this.underlyingSpinner.hide(name);
+                    this.spinnerState = false;
                 }
             }, DismissingDelayPeroid);
         }

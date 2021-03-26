@@ -59,6 +59,7 @@ var SpinnerServiceBase = /** @class */ (function () {
                 // Clean up the timer
                 _this._showingTimer = 0;
                 _this.underlyingSpinner.show(name);
+                _this.spinnerState = true;
             }
         }, this._showingDelay);
     };
@@ -102,6 +103,7 @@ var SpinnerServiceBase = /** @class */ (function () {
                     _this._dismissingTimer = 0;
                     // Dismiss the spinner 
                     _this.underlyingSpinner.hide(name);
+                    _this.spinnerState = false;
                 }
             }, DismissingDelayPeroid);
         }
