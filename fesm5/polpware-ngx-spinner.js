@@ -1,6 +1,6 @@
 import { __extends, __spread } from 'tslib';
 import { ɵɵinject, ɵɵdefineInjectable, ɵsetClassMetadata, Injectable } from '@angular/core';
-import { NgxLoggerImpl } from '@polpware/ngx-logger';
+import { LoggerProviderImpl } from '@polpware/ngx-logger';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 var PRIMARY_SPINNER = 'primary';
@@ -116,10 +116,10 @@ var PRIMARY_SPINNER$1 = 'primary';
  * Therefore, we are able to create many such services for each component */
 var SpinnerServiceImpl = /** @class */ (function (_super) {
     __extends(SpinnerServiceImpl, _super);
-    function SpinnerServiceImpl(underlyingSpinner, logger) {
+    function SpinnerServiceImpl(underlyingSpinner, loggerProvider) {
         var _this = _super.call(this) || this;
         _this.underlyingSpinner = underlyingSpinner;
-        _this.logger = logger;
+        _this.logger = loggerProvider.logger('polpware_ngx_spinner');
         return _this;
     }
     // Note that we do not need to stop it, as this is a service starting in the beginning.
@@ -135,13 +135,13 @@ var SpinnerServiceImpl = /** @class */ (function (_super) {
         if (name === void 0) { name = PRIMARY_SPINNER$1; }
         this._subr && this._subr.unsubscribe();
     };
-    /** @nocollapse */ SpinnerServiceImpl.ɵfac = function SpinnerServiceImpl_Factory(t) { return new (t || SpinnerServiceImpl)(ɵɵinject(NgxSpinnerService), ɵɵinject(NgxLoggerImpl)); };
+    /** @nocollapse */ SpinnerServiceImpl.ɵfac = function SpinnerServiceImpl_Factory(t) { return new (t || SpinnerServiceImpl)(ɵɵinject(NgxSpinnerService), ɵɵinject(LoggerProviderImpl)); };
     /** @nocollapse */ SpinnerServiceImpl.ɵprov = ɵɵdefineInjectable({ token: SpinnerServiceImpl, factory: SpinnerServiceImpl.ɵfac });
     return SpinnerServiceImpl;
 }(SpinnerServiceBase));
 /*@__PURE__*/ (function () { ɵsetClassMetadata(SpinnerServiceImpl, [{
         type: Injectable
-    }], function () { return [{ type: NgxSpinnerService }, { type: NgxLoggerImpl }]; }, null); })();
+    }], function () { return [{ type: NgxSpinnerService }, { type: LoggerProviderImpl }]; }, null); })();
 
 function loadingIndicatorDecorator(constructor) {
     return /** @class */ (function (_super) {

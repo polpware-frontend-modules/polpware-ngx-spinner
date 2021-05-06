@@ -1,5 +1,5 @@
 import { ɵɵinject, ɵɵdefineInjectable, ɵsetClassMetadata, Injectable } from '@angular/core';
-import { NgxLoggerImpl } from '@polpware/ngx-logger';
+import { LoggerProviderImpl } from '@polpware/ngx-logger';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 const PRIMARY_SPINNER = 'primary';
@@ -108,10 +108,10 @@ const PRIMARY_SPINNER$1 = 'primary';
 /* Note that on purpose we do not turn this one into a singular service.
  * Therefore, we are able to create many such services for each component */
 class SpinnerServiceImpl extends SpinnerServiceBase {
-    constructor(underlyingSpinner, logger) {
+    constructor(underlyingSpinner, loggerProvider) {
         super();
         this.underlyingSpinner = underlyingSpinner;
-        this.logger = logger;
+        this.logger = loggerProvider.logger('polpware_ngx_spinner');
     }
     // Note that we do not need to stop it, as this is a service starting in the beginning.
     startToListenSpinner(name = PRIMARY_SPINNER$1) {
@@ -124,11 +124,11 @@ class SpinnerServiceImpl extends SpinnerServiceBase {
         this._subr && this._subr.unsubscribe();
     }
 }
-/** @nocollapse */ SpinnerServiceImpl.ɵfac = function SpinnerServiceImpl_Factory(t) { return new (t || SpinnerServiceImpl)(ɵɵinject(NgxSpinnerService), ɵɵinject(NgxLoggerImpl)); };
+/** @nocollapse */ SpinnerServiceImpl.ɵfac = function SpinnerServiceImpl_Factory(t) { return new (t || SpinnerServiceImpl)(ɵɵinject(NgxSpinnerService), ɵɵinject(LoggerProviderImpl)); };
 /** @nocollapse */ SpinnerServiceImpl.ɵprov = ɵɵdefineInjectable({ token: SpinnerServiceImpl, factory: SpinnerServiceImpl.ɵfac });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(SpinnerServiceImpl, [{
         type: Injectable
-    }], function () { return [{ type: NgxSpinnerService }, { type: NgxLoggerImpl }]; }, null); })();
+    }], function () { return [{ type: NgxSpinnerService }, { type: LoggerProviderImpl }]; }, null); })();
 
 function loadingIndicatorDecorator(constructor) {
     return class extends constructor {
