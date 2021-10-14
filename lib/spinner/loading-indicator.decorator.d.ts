@@ -8,7 +8,9 @@ declare type DecoratorPrequisiteClass = {
 export declare function loadingIndicatorDecorator<T extends DecoratorPrequisiteClass>(constructor: T): {
     new (...args: any[]): {
         showLoadingIndicator(...args: any[]): void;
-        hideLoadingIndicator(): void;
+        hideLoadingIndicator(...args: any[]): void;
+        showLoadingIndicatorAsync(...args: any[]): Promise<any>;
+        hideLoadingIndicatorAsync(...args: any[]): Promise<any>;
         setLoadingIndicatorDelay(seconds: number): void;
         spinner: ISpinnerService;
     };

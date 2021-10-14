@@ -16,4 +16,6 @@ export declare abstract class SpinnerServiceBase implements ISpinnerService {
     setDelay(seconds: number): void;
     show(title?: string, name?: string): void;
     hide(name?: string): void;
+    showAsync(...args: any[]): Promise<unknown>;
+    hideAsync(...args: any[]): Promise<unknown>;
 }

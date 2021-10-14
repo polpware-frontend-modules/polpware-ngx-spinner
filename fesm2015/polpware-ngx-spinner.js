@@ -1,6 +1,7 @@
 import { ɵɵinject, ɵɵdefineInjectable, ɵsetClassMetadata, Injectable } from '@angular/core';
 import { LoggerProviderImpl } from '@polpware/ngx-logger';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { __awaiter } from 'tslib';
 
 const PRIMARY_SPINNER = 'primary';
 const DismissingDelayPeroid = 300;
@@ -102,6 +103,18 @@ class SpinnerServiceBase {
             }, DismissingDelayPeroid);
         }
     }
+    showAsync(...args) {
+        return new Promise((resolve, reject) => {
+            this.show(...args);
+            resolve();
+        });
+    }
+    hideAsync(...args) {
+        return new Promise((resolve, reject) => {
+            this.hide(...args);
+            resolve();
+        });
+    }
 }
 
 const PRIMARY_SPINNER$1 = 'primary';
@@ -135,8 +148,18 @@ function loadingIndicatorDecorator(constructor) {
         showLoadingIndicator(...args) {
             this.spinner.show(...args);
         }
-        hideLoadingIndicator() {
-            this.spinner.hide();
+        hideLoadingIndicator(...args) {
+            this.spinner.hide(...args);
+        }
+        showLoadingIndicatorAsync(...args) {
+            return __awaiter(this, void 0, void 0, function* () {
+                return yield this.spinner.showAsync(...args);
+            });
+        }
+        hideLoadingIndicatorAsync(...args) {
+            return __awaiter(this, void 0, void 0, function* () {
+                return yield this.spinner.hideAsync(...args);
+            });
         }
         setLoadingIndicatorDelay(seconds) {
             this.spinner.setDelay(seconds);
@@ -147,6 +170,16 @@ function loadingIndicatorDecorator(constructor) {
 class NullSpinner {
     show() { }
     hide() { }
+    showAsync() {
+        return new Promise((resolve, reject) => {
+            resolve();
+        });
+    }
+    hideAsync() {
+        return new Promise((resolve, reject) => {
+            resolve();
+        });
+    }
     setDelay(seconds) { }
 }
 

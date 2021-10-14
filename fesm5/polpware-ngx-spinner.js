@@ -1,4 +1,4 @@
-import { __extends, __spread } from 'tslib';
+import { __spread, __extends, __awaiter, __generator } from 'tslib';
 import { ɵɵinject, ɵɵdefineInjectable, ɵsetClassMetadata, Injectable } from '@angular/core';
 import { LoggerProviderImpl } from '@polpware/ngx-logger';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -108,6 +108,28 @@ var SpinnerServiceBase = /** @class */ (function () {
             }, DismissingDelayPeroid);
         }
     };
+    SpinnerServiceBase.prototype.showAsync = function () {
+        var _this = this;
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return new Promise(function (resolve, reject) {
+            _this.show.apply(_this, __spread(args));
+            resolve();
+        });
+    };
+    SpinnerServiceBase.prototype.hideAsync = function () {
+        var _this = this;
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return new Promise(function (resolve, reject) {
+            _this.hide.apply(_this, __spread(args));
+            resolve();
+        });
+    };
     return SpinnerServiceBase;
 }());
 
@@ -158,7 +180,42 @@ function loadingIndicatorDecorator(constructor) {
             (_a = this.spinner).show.apply(_a, __spread(args));
         };
         class_1.prototype.hideLoadingIndicator = function () {
-            this.spinner.hide();
+            var _a;
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            (_a = this.spinner).hide.apply(_a, __spread(args));
+        };
+        class_1.prototype.showLoadingIndicatorAsync = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            return __awaiter(this, void 0, void 0, function () {
+                var _a;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0: return [4 /*yield*/, (_a = this.spinner).showAsync.apply(_a, __spread(args))];
+                        case 1: return [2 /*return*/, _b.sent()];
+                    }
+                });
+            });
+        };
+        class_1.prototype.hideLoadingIndicatorAsync = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            return __awaiter(this, void 0, void 0, function () {
+                var _a;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0: return [4 /*yield*/, (_a = this.spinner).hideAsync.apply(_a, __spread(args))];
+                        case 1: return [2 /*return*/, _b.sent()];
+                    }
+                });
+            });
         };
         class_1.prototype.setLoadingIndicatorDelay = function (seconds) {
             this.spinner.setDelay(seconds);
@@ -172,6 +229,16 @@ var NullSpinner = /** @class */ (function () {
     }
     NullSpinner.prototype.show = function () { };
     NullSpinner.prototype.hide = function () { };
+    NullSpinner.prototype.showAsync = function () {
+        return new Promise(function (resolve, reject) {
+            resolve();
+        });
+    };
+    NullSpinner.prototype.hideAsync = function () {
+        return new Promise(function (resolve, reject) {
+            resolve();
+        });
+    };
     NullSpinner.prototype.setDelay = function (seconds) { };
     return NullSpinner;
 }());
