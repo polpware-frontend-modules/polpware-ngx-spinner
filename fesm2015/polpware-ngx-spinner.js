@@ -18,7 +18,98 @@ class SpinnerServiceBase {
         this._showingDelay = seconds * 1000;
     }
     // Override
-    show(title = 'Loading ...', name = PRIMARY_SPINNER) {
+    show(...args) {
+        const isStopped = this.preShow();
+        if (isStopped)
+            return;
+        this.logger.debug('Schedule for show');
+        // Otherwise, schdule to show the spinner.
+        if (this.underlyingSpinner.show) {
+            this._showingTimer = setTimeout(() => {
+                if (this._showingTimer) {
+                    // Clean up the timer
+                    this._showingTimer = 0;
+                    this.underlyingSpinner.show(...args);
+                    this.spinnerState = true;
+                }
+            }, this._showingDelay);
+        }
+        else {
+            this._showingTimer = setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                if (this._showingTimer) {
+                    // Clean up the timer
+                    this._showingTimer = 0;
+                    yield this.underlyingSpinner.showAsync(...args);
+                    this.spinnerState = true;
+                }
+            }), this._showingDelay);
+        }
+    }
+    hide(...args) {
+        const isStopped = this.preHide();
+        if (isStopped) {
+            return;
+        }
+        if (this.underlyingSpinner.hide) {
+            // If have scheduled to dismiss the spinner,
+            // we better we schedule again.
+            if (this._dismissingTimer) {
+                this.logger.debug('Reschedule for dismissing');
+                clearTimeout(this._dismissingTimer);
+                this._dismissingTimer = setTimeout(() => {
+                    if (this._dismissingTimer) {
+                        // Clean up the timer
+                        this._dismissingTimer = 0;
+                        // Dismiss the spinner 
+                        this.underlyingSpinner.hide(...args);
+                    }
+                }, DismissingDelayPeroid);
+                return;
+            }
+            // Schedule to dismiss the spinner
+            if (this.spinnerState) {
+                this.logger.debug('Schedule for dismissing');
+                this._dismissingTimer = setTimeout(() => {
+                    if (this._dismissingTimer) {
+                        this._dismissingTimer = 0;
+                        // Dismiss the spinner 
+                        this.underlyingSpinner.hide(...args);
+                        this.spinnerState = false;
+                    }
+                }, DismissingDelayPeroid);
+            }
+        }
+        else {
+            // If have scheduled to dismiss the spinner,
+            // we better we schedule again.
+            if (this._dismissingTimer) {
+                this.logger.debug('Reschedule for dismissing');
+                clearTimeout(this._dismissingTimer);
+                this._dismissingTimer = setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                    if (this._dismissingTimer) {
+                        // Clean up the timer
+                        this._dismissingTimer = 0;
+                        // Dismiss the spinner 
+                        yield this.underlyingSpinner.hideAsync(...args);
+                    }
+                }), DismissingDelayPeroid);
+                return;
+            }
+            // Schedule to dismiss the spinner
+            if (this.spinnerState) {
+                this.logger.debug('Schedule for dismissing');
+                this._dismissingTimer = setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                    if (this._dismissingTimer) {
+                        this._dismissingTimer = 0;
+                        // Dismiss the spinner 
+                        yield this.underlyingSpinner.hideAsync(...args);
+                        this.spinnerState = false;
+                    }
+                }), DismissingDelayPeroid);
+            }
+        }
+    }
+    preShow() {
         this.logger.debug('Spinner requested to show');
         this._referenceCounter++;
         this.logger.debug('Reference counter in show:' + this._referenceCounter);
@@ -33,7 +124,7 @@ class SpinnerServiceBase {
                 clearTimeout(this._dismissingTimer);
                 this._dismissingTimer = 0;
             }
-            return;
+            return true;
         }
         // If we have already scheduled to dismiss the spinner,
         // we just need to clear the scheduler.
@@ -47,25 +138,16 @@ class SpinnerServiceBase {
         // use this schedule. 
         if (this._showingTimer) {
             this.logger.debug('Already scheduled to show');
-            return;
+            return true;
         }
-        this.logger.debug('Schedule for show');
-        // Otherwise, schdule to show the spinner.
-        this._showingTimer = setTimeout(() => {
-            if (this._showingTimer) {
-                // Clean up the timer
-                this._showingTimer = 0;
-                this.underlyingSpinner.show(name);
-                this.spinnerState = true;
-            }
-        }, this._showingDelay);
+        return false;
     }
-    hide(name = PRIMARY_SPINNER) {
+    preHide() {
         this.logger.debug('Spinner requested to hide');
         this._referenceCounter--;
         this.logger.debug('Reference counter in hide:' + this._referenceCounter);
         if (this._referenceCounter > 0) {
-            return;
+            return true;
         }
         // If the spinner has not been scheduled.
         if (this._showingTimer) {
@@ -73,7 +155,7 @@ class SpinnerServiceBase {
             clearTimeout(this._showingTimer);
             this._showingTimer = 0;
             // Done
-            return;
+            return true;
         }
         // If have scheduled to dismiss the spinner,
         // we better we schedule again.
@@ -88,32 +170,9 @@ class SpinnerServiceBase {
                     this.underlyingSpinner.hide(name);
                 }
             }, DismissingDelayPeroid);
-            return;
+            return true;
         }
-        // Schedule to dismiss the spinner
-        if (this.spinnerState) {
-            this.logger.debug('Schedule for dismissing');
-            this._dismissingTimer = setTimeout(() => {
-                if (this._dismissingTimer) {
-                    this._dismissingTimer = 0;
-                    // Dismiss the spinner 
-                    this.underlyingSpinner.hide(name);
-                    this.spinnerState = false;
-                }
-            }, DismissingDelayPeroid);
-        }
-    }
-    showAsync(...args) {
-        return new Promise((resolve, reject) => {
-            this.show(...args);
-            resolve();
-        });
-    }
-    hideAsync(...args) {
-        return new Promise((resolve, reject) => {
-            this.hide(...args);
-            resolve();
-        });
+        return false;
     }
 }
 
@@ -151,16 +210,6 @@ function loadingIndicatorDecorator(constructor) {
         hideLoadingIndicator(...args) {
             this.spinner.hide(...args);
         }
-        showLoadingIndicatorAsync(...args) {
-            return __awaiter(this, void 0, void 0, function* () {
-                return yield this.spinner.showAsync(...args);
-            });
-        }
-        hideLoadingIndicatorAsync(...args) {
-            return __awaiter(this, void 0, void 0, function* () {
-                return yield this.spinner.hideAsync(...args);
-            });
-        }
         setLoadingIndicatorDelay(seconds) {
             this.spinner.setDelay(seconds);
         }
@@ -170,16 +219,6 @@ function loadingIndicatorDecorator(constructor) {
 class NullSpinner {
     show() { }
     hide() { }
-    showAsync() {
-        return new Promise((resolve, reject) => {
-            resolve();
-        });
-    }
-    hideAsync() {
-        return new Promise((resolve, reject) => {
-            resolve();
-        });
-    }
     setDelay(seconds) { }
 }
 
@@ -191,5 +230,5 @@ class NullSpinner {
  * Generated bundle index. Do not edit.
  */
 
-export { NullSpinner, SpinnerServiceBase, SpinnerServiceImpl, loadingIndicatorDecorator };
+export { NullSpinner, PRIMARY_SPINNER, SpinnerServiceBase, SpinnerServiceImpl, loadingIndicatorDecorator };
 //# sourceMappingURL=polpware-ngx-spinner.js.map

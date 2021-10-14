@@ -1,6 +1,6 @@
 {
   "name": "@polpware/ngx-spinner",
-  "version": "9.3.0",
+  "version": "9.4.0",
   "peerDependencies": {
     "@angular/common": "^9.0.0",
     "@angular/core": "^9.0.0",

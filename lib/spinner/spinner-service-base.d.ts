@@ -1,9 +1,12 @@
 import { INgxLogger } from '@polpware/ngx-logger';
 import { ISpinnerService } from './spinner.interface';
 export interface IUnderlyingSpinner {
-    show(name?: any): any;
-    hide(name?: any): any;
+    show?(...args: any[]): void;
+    hide?(...args: any[]): void;
+    showAsync?(...args: any[]): Promise<any>;
+    hideAsync?(...args: any[]): Promise<any>;
 }
+export declare const PRIMARY_SPINNER = "primary";
 export declare abstract class SpinnerServiceBase implements ISpinnerService {
     protected underlyingSpinner: IUnderlyingSpinner;
     protected logger: INgxLogger;
@@ -14,8 +17,8 @@ export declare abstract class SpinnerServiceBase implements ISpinnerService {
     private _referenceCounter;
     constructor();
     setDelay(seconds: number): void;
-    show(title?: string, name?: string): void;
-    hide(name?: string): void;
-    showAsync(...args: any[]): Promise<unknown>;
-    hideAsync(...args: any[]): Promise<unknown>;
+    show(...args: any[]): void;
+    hide(...args: any[]): void;
+    protected preShow(): boolean;
+    protected preHide(): boolean;
 }

@@ -9,8 +9,6 @@ export declare function loadingIndicatorDecorator<T extends DecoratorPrequisiteC
     new (...args: any[]): {
         showLoadingIndicator(...args: any[]): void;
         hideLoadingIndicator(...args: any[]): void;
-        showLoadingIndicatorAsync(...args: any[]): Promise<any>;
-        hideLoadingIndicatorAsync(...args: any[]): Promise<any>;
         setLoadingIndicatorDelay(seconds: number): void;
         spinner: ISpinnerService;
     };

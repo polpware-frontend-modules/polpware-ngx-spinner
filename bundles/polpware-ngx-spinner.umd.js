@@ -238,10 +238,140 @@
             this._showingDelay = seconds * 1000;
         };
         // Override
-        SpinnerServiceBase.prototype.show = function (title, name) {
+        SpinnerServiceBase.prototype.show = function () {
             var _this = this;
-            if (title === void 0) { title = 'Loading ...'; }
-            if (name === void 0) { name = PRIMARY_SPINNER; }
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            var isStopped = this.preShow();
+            if (isStopped)
+                return;
+            this.logger.debug('Schedule for show');
+            // Otherwise, schdule to show the spinner.
+            if (this.underlyingSpinner.show) {
+                this._showingTimer = setTimeout(function () {
+                    var _a;
+                    if (_this._showingTimer) {
+                        // Clean up the timer
+                        _this._showingTimer = 0;
+                        (_a = _this.underlyingSpinner).show.apply(_a, __spread(args));
+                        _this.spinnerState = true;
+                    }
+                }, this._showingDelay);
+            }
+            else {
+                this._showingTimer = setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
+                    var _a;
+                    return __generator(this, function (_b) {
+                        switch (_b.label) {
+                            case 0:
+                                if (!this._showingTimer) return [3 /*break*/, 2];
+                                // Clean up the timer
+                                this._showingTimer = 0;
+                                return [4 /*yield*/, (_a = this.underlyingSpinner).showAsync.apply(_a, __spread(args))];
+                            case 1:
+                                _b.sent();
+                                this.spinnerState = true;
+                                _b.label = 2;
+                            case 2: return [2 /*return*/];
+                        }
+                    });
+                }); }, this._showingDelay);
+            }
+        };
+        SpinnerServiceBase.prototype.hide = function () {
+            var _this = this;
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            var isStopped = this.preHide();
+            if (isStopped) {
+                return;
+            }
+            if (this.underlyingSpinner.hide) {
+                // If have scheduled to dismiss the spinner,
+                // we better we schedule again.
+                if (this._dismissingTimer) {
+                    this.logger.debug('Reschedule for dismissing');
+                    clearTimeout(this._dismissingTimer);
+                    this._dismissingTimer = setTimeout(function () {
+                        var _a;
+                        if (_this._dismissingTimer) {
+                            // Clean up the timer
+                            _this._dismissingTimer = 0;
+                            // Dismiss the spinner 
+                            (_a = _this.underlyingSpinner).hide.apply(_a, __spread(args));
+                        }
+                    }, DismissingDelayPeroid);
+                    return;
+                }
+                // Schedule to dismiss the spinner
+                if (this.spinnerState) {
+                    this.logger.debug('Schedule for dismissing');
+                    this._dismissingTimer = setTimeout(function () {
+                        var _a;
+                        if (_this._dismissingTimer) {
+                            _this._dismissingTimer = 0;
+                            // Dismiss the spinner 
+                            (_a = _this.underlyingSpinner).hide.apply(_a, __spread(args));
+                            _this.spinnerState = false;
+                        }
+                    }, DismissingDelayPeroid);
+                }
+            }
+            else {
+                // If have scheduled to dismiss the spinner,
+                // we better we schedule again.
+                if (this._dismissingTimer) {
+                    this.logger.debug('Reschedule for dismissing');
+                    clearTimeout(this._dismissingTimer);
+                    this._dismissingTimer = setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
+                        var _a;
+                        return __generator(this, function (_b) {
+                            switch (_b.label) {
+                                case 0:
+                                    if (!this._dismissingTimer) return [3 /*break*/, 2];
+                                    // Clean up the timer
+                                    this._dismissingTimer = 0;
+                                    // Dismiss the spinner 
+                                    return [4 /*yield*/, (_a = this.underlyingSpinner).hideAsync.apply(_a, __spread(args))];
+                                case 1:
+                                    // Dismiss the spinner 
+                                    _b.sent();
+                                    _b.label = 2;
+                                case 2: return [2 /*return*/];
+                            }
+                        });
+                    }); }, DismissingDelayPeroid);
+                    return;
+                }
+                // Schedule to dismiss the spinner
+                if (this.spinnerState) {
+                    this.logger.debug('Schedule for dismissing');
+                    this._dismissingTimer = setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
+                        var _a;
+                        return __generator(this, function (_b) {
+                            switch (_b.label) {
+                                case 0:
+                                    if (!this._dismissingTimer) return [3 /*break*/, 2];
+                                    this._dismissingTimer = 0;
+                                    // Dismiss the spinner 
+                                    return [4 /*yield*/, (_a = this.underlyingSpinner).hideAsync.apply(_a, __spread(args))];
+                                case 1:
+                                    // Dismiss the spinner 
+                                    _b.sent();
+                                    this.spinnerState = false;
+                                    _b.label = 2;
+                                case 2: return [2 /*return*/];
+                            }
+                        });
+                    }); }, DismissingDelayPeroid);
+                }
+            }
+        };
+        SpinnerServiceBase.prototype.preShow = function () {
             this.logger.debug('Spinner requested to show');
             this._referenceCounter++;
             this.logger.debug('Reference counter in show:' + this._referenceCounter);
@@ -256,7 +386,7 @@
                     clearTimeout(this._dismissingTimer);
                     this._dismissingTimer = 0;
                 }
-                return;
+                return true;
             }
             // If we have already scheduled to dismiss the spinner,
             // we just need to clear the scheduler.
@@ -270,27 +400,17 @@
             // use this schedule. 
             if (this._showingTimer) {
                 this.logger.debug('Already scheduled to show');
-                return;
+                return true;
             }
-            this.logger.debug('Schedule for show');
-            // Otherwise, schdule to show the spinner.
-            this._showingTimer = setTimeout(function () {
-                if (_this._showingTimer) {
-                    // Clean up the timer
-                    _this._showingTimer = 0;
-                    _this.underlyingSpinner.show(name);
-                    _this.spinnerState = true;
-                }
-            }, this._showingDelay);
+            return false;
         };
-        SpinnerServiceBase.prototype.hide = function (name) {
+        SpinnerServiceBase.prototype.preHide = function () {
             var _this = this;
-            if (name === void 0) { name = PRIMARY_SPINNER; }
             this.logger.debug('Spinner requested to hide');
             this._referenceCounter--;
             this.logger.debug('Reference counter in hide:' + this._referenceCounter);
             if (this._referenceCounter > 0) {
-                return;
+                return true;
             }
             // If the spinner has not been scheduled.
             if (this._showingTimer) {
@@ -298,7 +418,7 @@
                 clearTimeout(this._showingTimer);
                 this._showingTimer = 0;
                 // Done
-                return;
+                return true;
             }
             // If have scheduled to dismiss the spinner,
             // we better we schedule again.
@@ -313,42 +433,9 @@
                         _this.underlyingSpinner.hide(name);
                     }
                 }, DismissingDelayPeroid);
-                return;
+                return true;
             }
-            // Schedule to dismiss the spinner
-            if (this.spinnerState) {
-                this.logger.debug('Schedule for dismissing');
-                this._dismissingTimer = setTimeout(function () {
-                    if (_this._dismissingTimer) {
-                        _this._dismissingTimer = 0;
-                        // Dismiss the spinner 
-                        _this.underlyingSpinner.hide(name);
-                        _this.spinnerState = false;
-                    }
-                }, DismissingDelayPeroid);
-            }
-        };
-        SpinnerServiceBase.prototype.showAsync = function () {
-            var _this = this;
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            return new Promise(function (resolve, reject) {
-                _this.show.apply(_this, __spread(args));
-                resolve();
-            });
-        };
-        SpinnerServiceBase.prototype.hideAsync = function () {
-            var _this = this;
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            return new Promise(function (resolve, reject) {
-                _this.hide.apply(_this, __spread(args));
-                resolve();
-            });
+            return false;
         };
         return SpinnerServiceBase;
     }());
@@ -407,36 +494,6 @@
                 }
                 (_a = this.spinner).hide.apply(_a, __spread(args));
             };
-            class_1.prototype.showLoadingIndicatorAsync = function () {
-                var args = [];
-                for (var _i = 0; _i < arguments.length; _i++) {
-                    args[_i] = arguments[_i];
-                }
-                return __awaiter(this, void 0, void 0, function () {
-                    var _a;
-                    return __generator(this, function (_b) {
-                        switch (_b.label) {
-                            case 0: return [4 /*yield*/, (_a = this.spinner).showAsync.apply(_a, __spread(args))];
-                            case 1: return [2 /*return*/, _b.sent()];
-                        }
-                    });
-                });
-            };
-            class_1.prototype.hideLoadingIndicatorAsync = function () {
-                var args = [];
-                for (var _i = 0; _i < arguments.length; _i++) {
-                    args[_i] = arguments[_i];
-                }
-                return __awaiter(this, void 0, void 0, function () {
-                    var _a;
-                    return __generator(this, function (_b) {
-                        switch (_b.label) {
-                            case 0: return [4 /*yield*/, (_a = this.spinner).hideAsync.apply(_a, __spread(args))];
-                            case 1: return [2 /*return*/, _b.sent()];
-                        }
-                    });
-                });
-            };
             class_1.prototype.setLoadingIndicatorDelay = function (seconds) {
                 this.spinner.setDelay(seconds);
             };
@@ -449,21 +506,12 @@
         }
         NullSpinner.prototype.show = function () { };
         NullSpinner.prototype.hide = function () { };
-        NullSpinner.prototype.showAsync = function () {
-            return new Promise(function (resolve, reject) {
-                resolve();
-            });
-        };
-        NullSpinner.prototype.hideAsync = function () {
-            return new Promise(function (resolve, reject) {
-                resolve();
-            });
-        };
         NullSpinner.prototype.setDelay = function (seconds) { };
         return NullSpinner;
     }());
 
     exports.NullSpinner = NullSpinner;
+    exports.PRIMARY_SPINNER = PRIMARY_SPINNER;
     exports.SpinnerServiceBase = SpinnerServiceBase;
     exports.SpinnerServiceImpl = SpinnerServiceImpl;
     exports.loadingIndicatorDecorator = loadingIndicatorDecorator;
