@@ -12,11 +12,13 @@ export declare abstract class SpinnerServiceBase implements ISpinnerService {
     protected logger: INgxLogger;
     private _showingTimer;
     private _showingDelay;
+    private _dismissingDelay;
     private _dismissingTimer;
     protected spinnerState: boolean;
     private _referenceCounter;
     constructor();
     setDelay(seconds: number): void;
+    setDismissDelay(seconds: number): void;
     show(...args: any[]): void;
     hide(...args: any[]): void;
     protected preShow(): boolean;

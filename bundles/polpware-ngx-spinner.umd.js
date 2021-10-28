@@ -231,11 +231,15 @@
             this._referenceCounter = 0;
             this._showingTimer = 0;
             this._showingDelay = DefaultShowingDelayPeroid;
+            this._dismissingDelay = DismissingDelayPeroid;
             this._dismissingTimer = 0;
             this.spinnerState = false;
         }
         SpinnerServiceBase.prototype.setDelay = function (seconds) {
             this._showingDelay = seconds * 1000;
+        };
+        SpinnerServiceBase.prototype.setDismissDelay = function (seconds) {
+            this._dismissingDelay = seconds * 1000;
         };
         // Override
         SpinnerServiceBase.prototype.show = function () {
@@ -304,7 +308,7 @@
                             // Dismiss the spinner 
                             (_a = _this.underlyingSpinner).hide.apply(_a, __spread(args));
                         }
-                    }, DismissingDelayPeroid);
+                    }, this._dismissingDelay);
                     return;
                 }
                 // Schedule to dismiss the spinner
@@ -318,7 +322,7 @@
                             (_a = _this.underlyingSpinner).hide.apply(_a, __spread(args));
                             _this.spinnerState = false;
                         }
-                    }, DismissingDelayPeroid);
+                    }, this._dismissingDelay);
                 }
             }
             else {
@@ -344,7 +348,7 @@
                                 case 2: return [2 /*return*/];
                             }
                         });
-                    }); }, DismissingDelayPeroid);
+                    }); }, this._dismissingDelay);
                     return;
                 }
                 // Schedule to dismiss the spinner
@@ -367,7 +371,7 @@
                                 case 2: return [2 /*return*/];
                             }
                         });
-                    }); }, DismissingDelayPeroid);
+                    }); }, this._dismissingDelay);
                 }
             }
         };
@@ -405,7 +409,6 @@
             return false;
         };
         SpinnerServiceBase.prototype.preHide = function () {
-            var _this = this;
             this.logger.debug('Spinner requested to hide');
             this._referenceCounter--;
             this.logger.debug('Reference counter in hide:' + this._referenceCounter);
@@ -418,21 +421,6 @@
                 clearTimeout(this._showingTimer);
                 this._showingTimer = 0;
                 // Done
-                return true;
-            }
-            // If have scheduled to dismiss the spinner,
-            // we better we schedule again.
-            if (this._dismissingTimer) {
-                this.logger.debug('Reschedule for dismissing');
-                clearTimeout(this._dismissingTimer);
-                this._dismissingTimer = setTimeout(function () {
-                    if (_this._dismissingTimer) {
-                        // Clean up the timer
-                        _this._dismissingTimer = 0;
-                        // Dismiss the spinner 
-                        _this.underlyingSpinner.hide(name);
-                    }
-                }, DismissingDelayPeroid);
                 return true;
             }
             return false;

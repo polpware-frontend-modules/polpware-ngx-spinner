@@ -11,11 +11,15 @@ class SpinnerServiceBase {
         this._referenceCounter = 0;
         this._showingTimer = 0;
         this._showingDelay = DefaultShowingDelayPeroid;
+        this._dismissingDelay = DismissingDelayPeroid;
         this._dismissingTimer = 0;
         this.spinnerState = false;
     }
     setDelay(seconds) {
         this._showingDelay = seconds * 1000;
+    }
+    setDismissDelay(seconds) {
+        this._dismissingDelay = seconds * 1000;
     }
     // Override
     show(...args) {
@@ -63,7 +67,7 @@ class SpinnerServiceBase {
                         // Dismiss the spinner 
                         this.underlyingSpinner.hide(...args);
                     }
-                }, DismissingDelayPeroid);
+                }, this._dismissingDelay);
                 return;
             }
             // Schedule to dismiss the spinner
@@ -76,7 +80,7 @@ class SpinnerServiceBase {
                         this.underlyingSpinner.hide(...args);
                         this.spinnerState = false;
                     }
-                }, DismissingDelayPeroid);
+                }, this._dismissingDelay);
             }
         }
         else {
@@ -92,7 +96,7 @@ class SpinnerServiceBase {
                         // Dismiss the spinner 
                         yield this.underlyingSpinner.hideAsync(...args);
                     }
-                }), DismissingDelayPeroid);
+                }), this._dismissingDelay);
                 return;
             }
             // Schedule to dismiss the spinner
@@ -105,7 +109,7 @@ class SpinnerServiceBase {
                         yield this.underlyingSpinner.hideAsync(...args);
                         this.spinnerState = false;
                     }
-                }), DismissingDelayPeroid);
+                }), this._dismissingDelay);
             }
         }
     }
@@ -155,21 +159,6 @@ class SpinnerServiceBase {
             clearTimeout(this._showingTimer);
             this._showingTimer = 0;
             // Done
-            return true;
-        }
-        // If have scheduled to dismiss the spinner,
-        // we better we schedule again.
-        if (this._dismissingTimer) {
-            this.logger.debug('Reschedule for dismissing');
-            clearTimeout(this._dismissingTimer);
-            this._dismissingTimer = setTimeout(() => {
-                if (this._dismissingTimer) {
-                    // Clean up the timer
-                    this._dismissingTimer = 0;
-                    // Dismiss the spinner 
-                    this.underlyingSpinner.hide(name);
-                }
-            }, DismissingDelayPeroid);
             return true;
         }
         return false;
