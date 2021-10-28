@@ -307,6 +307,7 @@
                             _this._dismissingTimer = 0;
                             // Dismiss the spinner 
                             (_a = _this.underlyingSpinner).hide.apply(_a, __spread(args));
+                            _this.spinnerState = false;
                         }
                     }, this._dismissingDelay);
                     return;
@@ -344,6 +345,7 @@
                                 case 1:
                                     // Dismiss the spinner 
                                     _b.sent();
+                                    this.spinnerState = false;
                                     _b.label = 2;
                                 case 2: return [2 /*return*/];
                             }

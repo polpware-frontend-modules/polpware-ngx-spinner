@@ -66,6 +66,7 @@ class SpinnerServiceBase {
                         this._dismissingTimer = 0;
                         // Dismiss the spinner 
                         this.underlyingSpinner.hide(...args);
+                        this.spinnerState = false;
                     }
                 }, this._dismissingDelay);
                 return;
@@ -95,6 +96,7 @@ class SpinnerServiceBase {
                         this._dismissingTimer = 0;
                         // Dismiss the spinner 
                         yield this.underlyingSpinner.hideAsync(...args);
+                        this.spinnerState = false;
                     }
                 }), this._dismissingDelay);
                 return;
