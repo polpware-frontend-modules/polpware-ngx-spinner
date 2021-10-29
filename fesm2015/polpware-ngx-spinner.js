@@ -31,20 +31,20 @@ class SpinnerServiceBase {
         if (this.underlyingSpinner.show) {
             this._showingTimer = setTimeout(() => {
                 if (this._showingTimer) {
-                    this.underlyingSpinner.show(...args);
                     // Clean up the timer
                     this._showingTimer = 0;
                     this.spinnerState = true;
+                    this.underlyingSpinner.show(...args);
                 }
             }, this._showingDelay);
         }
         else {
             this._showingTimer = setTimeout(() => __awaiter(this, void 0, void 0, function* () {
                 if (this._showingTimer) {
-                    yield this.underlyingSpinner.showAsync(...args);
                     // Clean up the timer
                     this._showingTimer = 0;
                     this.spinnerState = true;
+                    yield this.underlyingSpinner.showAsync(...args);
                 }
             }), this._showingDelay);
         }
@@ -62,11 +62,11 @@ class SpinnerServiceBase {
                 clearTimeout(this._dismissingTimer);
                 this._dismissingTimer = setTimeout(() => {
                     if (this._dismissingTimer) {
-                        // Dismiss the spinner 
-                        this.underlyingSpinner.hide(...args);
                         // Clean up the timer
                         this._dismissingTimer = 0;
                         this.spinnerState = false;
+                        // Dismiss the spinner 
+                        this.underlyingSpinner.hide(...args);
                     }
                 }, this._dismissingDelay);
                 return;
@@ -76,10 +76,10 @@ class SpinnerServiceBase {
                 this.logger.debug('Schedule for dismissing');
                 this._dismissingTimer = setTimeout(() => {
                     if (this._dismissingTimer) {
-                        // Dismiss the spinner 
-                        this.underlyingSpinner.hide(...args);
                         this._dismissingTimer = 0;
                         this.spinnerState = false;
+                        // Dismiss the spinner 
+                        this.underlyingSpinner.hide(...args);
                     }
                 }, this._dismissingDelay);
             }
@@ -92,11 +92,11 @@ class SpinnerServiceBase {
                 clearTimeout(this._dismissingTimer);
                 this._dismissingTimer = setTimeout(() => __awaiter(this, void 0, void 0, function* () {
                     if (this._dismissingTimer) {
-                        // Dismiss the spinner 
-                        yield this.underlyingSpinner.hideAsync(...args);
                         // Clean up the timer
                         this._dismissingTimer = 0;
                         this.spinnerState = false;
+                        // Dismiss the spinner 
+                        yield this.underlyingSpinner.hideAsync(...args);
                     }
                 }), this._dismissingDelay);
                 return;
@@ -106,10 +106,10 @@ class SpinnerServiceBase {
                 this.logger.debug('Schedule for dismissing');
                 this._dismissingTimer = setTimeout(() => __awaiter(this, void 0, void 0, function* () {
                     if (this._dismissingTimer) {
-                        // Dismiss the spinner 
-                        yield this.underlyingSpinner.hideAsync(...args);
                         this._dismissingTimer = 0;
                         this.spinnerState = false;
+                        // Dismiss the spinner 
+                        yield this.underlyingSpinner.hideAsync(...args);
                     }
                 }), this._dismissingDelay);
             }
