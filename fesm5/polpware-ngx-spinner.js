@@ -37,9 +37,9 @@ var SpinnerServiceBase = /** @class */ (function () {
             this._showingTimer = setTimeout(function () {
                 var _a;
                 if (_this._showingTimer) {
+                    (_a = _this.underlyingSpinner).show.apply(_a, __spread(args));
                     // Clean up the timer
                     _this._showingTimer = 0;
-                    (_a = _this.underlyingSpinner).show.apply(_a, __spread(args));
                     _this.spinnerState = true;
                 }
             }, this._showingDelay);
@@ -51,11 +51,11 @@ var SpinnerServiceBase = /** @class */ (function () {
                     switch (_b.label) {
                         case 0:
                             if (!this._showingTimer) return [3 /*break*/, 2];
-                            // Clean up the timer
-                            this._showingTimer = 0;
                             return [4 /*yield*/, (_a = this.underlyingSpinner).showAsync.apply(_a, __spread(args))];
                         case 1:
                             _b.sent();
+                            // Clean up the timer
+                            this._showingTimer = 0;
                             this.spinnerState = true;
                             _b.label = 2;
                         case 2: return [2 /*return*/];
@@ -83,10 +83,10 @@ var SpinnerServiceBase = /** @class */ (function () {
                 this._dismissingTimer = setTimeout(function () {
                     var _a;
                     if (_this._dismissingTimer) {
-                        // Clean up the timer
-                        _this._dismissingTimer = 0;
                         // Dismiss the spinner 
                         (_a = _this.underlyingSpinner).hide.apply(_a, __spread(args));
+                        // Clean up the timer
+                        _this._dismissingTimer = 0;
                         _this.spinnerState = false;
                     }
                 }, this._dismissingDelay);
@@ -98,9 +98,9 @@ var SpinnerServiceBase = /** @class */ (function () {
                 this._dismissingTimer = setTimeout(function () {
                     var _a;
                     if (_this._dismissingTimer) {
-                        _this._dismissingTimer = 0;
                         // Dismiss the spinner 
                         (_a = _this.underlyingSpinner).hide.apply(_a, __spread(args));
+                        _this._dismissingTimer = 0;
                         _this.spinnerState = false;
                     }
                 }, this._dismissingDelay);
@@ -118,13 +118,13 @@ var SpinnerServiceBase = /** @class */ (function () {
                         switch (_b.label) {
                             case 0:
                                 if (!this._dismissingTimer) return [3 /*break*/, 2];
-                                // Clean up the timer
-                                this._dismissingTimer = 0;
                                 // Dismiss the spinner 
                                 return [4 /*yield*/, (_a = this.underlyingSpinner).hideAsync.apply(_a, __spread(args))];
                             case 1:
                                 // Dismiss the spinner 
                                 _b.sent();
+                                // Clean up the timer
+                                this._dismissingTimer = 0;
                                 this.spinnerState = false;
                                 _b.label = 2;
                             case 2: return [2 /*return*/];
@@ -142,12 +142,12 @@ var SpinnerServiceBase = /** @class */ (function () {
                         switch (_b.label) {
                             case 0:
                                 if (!this._dismissingTimer) return [3 /*break*/, 2];
-                                this._dismissingTimer = 0;
                                 // Dismiss the spinner 
                                 return [4 /*yield*/, (_a = this.underlyingSpinner).hideAsync.apply(_a, __spread(args))];
                             case 1:
                                 // Dismiss the spinner 
                                 _b.sent();
+                                this._dismissingTimer = 0;
                                 this.spinnerState = false;
                                 _b.label = 2;
                             case 2: return [2 /*return*/];
