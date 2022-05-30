@@ -8,6 +8,6 @@ export declare class SpinnerServiceImpl extends SpinnerServiceBase {
     constructor(underlyingSpinner: NgxSpinnerService, loggerProvider: LoggerProviderImpl);
     startToListenSpinner(name?: string): void;
     stopListener(name?: string): void;
-    static ɵfac: i0.ɵɵFactoryDef<SpinnerServiceImpl, never>;
-    static ɵprov: i0.ɵɵInjectableDef<SpinnerServiceImpl>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<SpinnerServiceImpl, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<SpinnerServiceImpl>;
 }
