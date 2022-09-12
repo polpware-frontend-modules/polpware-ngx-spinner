@@ -1,9 +1,24 @@
-import * as i0 from '@angular/core';
-import { Injectable } from '@angular/core';
-import * as i1 from 'ngx-spinner';
-import * as i2 from '@polpware/ngx-logger';
+function loadingIndicatorDecorator(constructor) {
+    return class extends constructor {
+        showLoadingIndicator(...args) {
+            this.spinner.show(...args);
+        }
+        hideLoadingIndicator(...args) {
+            this.spinner.hide(...args);
+        }
+        setLoadingIndicatorDelay(seconds) {
+            this.spinner.setDelay(seconds);
+        }
+    };
+}
 
-const PRIMARY_SPINNER$1 = 'primary';
+class NullSpinner {
+    show() { }
+    hide() { }
+    setDelay(seconds) { }
+}
+
+const PRIMARY_SPINNER = 'primary';
 const DismissingDelayPeroid = 300;
 const DefaultShowingDelayPeroid = 500;
 class SpinnerServiceBase {
@@ -167,52 +182,6 @@ class SpinnerServiceBase {
     }
 }
 
-const PRIMARY_SPINNER = 'primary';
-/* Note that on purpose we do not turn this one into a singular service.
- * Therefore, we are able to create many such services for each component */
-class SpinnerServiceImpl extends SpinnerServiceBase {
-    constructor(underlyingSpinner, loggerProvider) {
-        super();
-        this.underlyingSpinner = underlyingSpinner;
-        this.logger = loggerProvider.logger('polpware_ngx_spinner');
-    }
-    // Note that we do not need to stop it, as this is a service starting in the beginning.
-    startToListenSpinner(name = PRIMARY_SPINNER) {
-        // Set up the listener
-        this._subr = this.underlyingSpinner.getSpinner(name).subscribe(x => {
-            this.spinnerState = x.show;
-        });
-    }
-    stopListener(name = PRIMARY_SPINNER) {
-        this._subr && this._subr.unsubscribe();
-    }
-}
-/** @nocollapse */ SpinnerServiceImpl.ɵfac = function SpinnerServiceImpl_Factory(t) { return new (t || SpinnerServiceImpl)(i0.ɵɵinject(i1.NgxSpinnerService), i0.ɵɵinject(i2.LoggerProviderImpl)); };
-/** @nocollapse */ SpinnerServiceImpl.ɵprov = /** @pureOrBreakMyCode */ i0.ɵɵdefineInjectable({ token: SpinnerServiceImpl, factory: SpinnerServiceImpl.ɵfac });
-(function () { (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(SpinnerServiceImpl, [{
-        type: Injectable
-    }], function () { return [{ type: i1.NgxSpinnerService }, { type: i2.LoggerProviderImpl }]; }, null); })();
-
-function loadingIndicatorDecorator(constructor) {
-    return class extends constructor {
-        showLoadingIndicator(...args) {
-            this.spinner.show(...args);
-        }
-        hideLoadingIndicator(...args) {
-            this.spinner.hide(...args);
-        }
-        setLoadingIndicatorDelay(seconds) {
-            this.spinner.setDelay(seconds);
-        }
-    };
-}
-
-class NullSpinner {
-    show() { }
-    hide() { }
-    setDelay(seconds) { }
-}
-
 /*
  * Public API Surface of ngx-spinner
  */
@@ -221,5 +190,5 @@ class NullSpinner {
  * Generated bundle index. Do not edit.
  */
 
-export { NullSpinner, PRIMARY_SPINNER$1 as PRIMARY_SPINNER, SpinnerServiceBase, SpinnerServiceImpl, loadingIndicatorDecorator };
+export { NullSpinner, PRIMARY_SPINNER, SpinnerServiceBase, loadingIndicatorDecorator };
 //# sourceMappingURL=polpware-ngx-spinner.mjs.map
