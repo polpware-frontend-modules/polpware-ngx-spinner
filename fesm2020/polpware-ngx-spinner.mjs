@@ -1,3 +1,7 @@
+import * as i0 from '@angular/core';
+import { Injectable } from '@angular/core';
+import * as i1 from '@polpware/ngx-logger';
+
 function loadingIndicatorDecorator(constructor) {
     return class extends constructor {
         showLoadingIndicator(...args) {
@@ -182,6 +186,26 @@ class SpinnerServiceBase {
     }
 }
 
+/* Note that on purpose we do not turn this one into a singular service.
+ * Therefore, we are able to create many such services for each component */
+class SpinnerPlaceholderService extends SpinnerServiceBase {
+    constructor(loggerProvider) {
+        super();
+        this.underlyingSpinner = new NullSpinner();
+        this.logger = loggerProvider.logger('polpware_ngx_spinner');
+    }
+    // Note that we do not need to stop it, as this is a service starting in the beginning.
+    startToListenSpinner(...args) {
+    }
+    stopListener(...args) {
+    }
+}
+/** @nocollapse */ SpinnerPlaceholderService.ɵfac = function SpinnerPlaceholderService_Factory(t) { return new (t || SpinnerPlaceholderService)(i0.ɵɵinject(i1.LoggerProviderImpl)); };
+/** @nocollapse */ SpinnerPlaceholderService.ɵprov = /** @pureOrBreakMyCode */ i0.ɵɵdefineInjectable({ token: SpinnerPlaceholderService, factory: SpinnerPlaceholderService.ɵfac });
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(SpinnerPlaceholderService, [{
+        type: Injectable
+    }], function () { return [{ type: i1.LoggerProviderImpl }]; }, null); })();
+
 /*
  * Public API Surface of ngx-spinner
  */
@@ -190,5 +214,5 @@ class SpinnerServiceBase {
  * Generated bundle index. Do not edit.
  */
 
-export { NullSpinner, PRIMARY_SPINNER, SpinnerServiceBase, loadingIndicatorDecorator };
+export { NullSpinner, PRIMARY_SPINNER, SpinnerPlaceholderService, SpinnerServiceBase, loadingIndicatorDecorator };
 //# sourceMappingURL=polpware-ngx-spinner.mjs.map
