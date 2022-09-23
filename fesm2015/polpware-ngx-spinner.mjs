@@ -184,18 +184,20 @@ class SpinnerServiceBase {
     }
 }
 
-/* Note that on purpose we do not make this to be service.
- * Therefore, we are able to define its behavior in the host application. */
-class SpinnerPlaceholderService extends SpinnerServiceBase {
-    constructor(loggerProvider) {
-        super();
-        this.underlyingSpinner = new NullSpinner();
-        this.logger = loggerProvider.logger('polpware_ngx_spinner');
-    }
-    // Note that we do not need to stop it, as this is a service starting in the beginning.
+class NullSpinnerExt extends NullSpinner {
     startToListenSpinner(...args) {
     }
     stopListener(...args) {
+    }
+}
+/* Note that on purpose we do not make this to be service.
+ * Therefore, we are able to define its behavior in the host application. */
+class SpinnerProviderImpl {
+    constructor() {
+        this._impl = new NullSpinnerExt();
+    }
+    get(key) {
+        return this._impl;
     }
 }
 
@@ -207,5 +209,5 @@ class SpinnerPlaceholderService extends SpinnerServiceBase {
  * Generated bundle index. Do not edit.
  */
 
-export { NullSpinner, PRIMARY_SPINNER, SpinnerPlaceholderService, SpinnerServiceBase, loadingIndicatorDecorator };
+export { NullSpinner, NullSpinnerExt, PRIMARY_SPINNER, SpinnerProviderImpl, SpinnerServiceBase, loadingIndicatorDecorator };
 //# sourceMappingURL=polpware-ngx-spinner.mjs.map
