@@ -1,7 +1,4 @@
 import { __awaiter } from 'tslib';
-import * as i0 from '@angular/core';
-import { Injectable } from '@angular/core';
-import * as i1 from '@polpware/ngx-logger';
 
 function loadingIndicatorDecorator(constructor) {
     return class extends constructor {
@@ -187,8 +184,8 @@ class SpinnerServiceBase {
     }
 }
 
-/* Note that on purpose we do not turn this one into a singular service.
- * Therefore, we are able to create many such services for each component */
+/* Note that on purpose we do not make this to be service.
+ * Therefore, we are able to define its behavior in the host application. */
 class SpinnerPlaceholderService extends SpinnerServiceBase {
     constructor(loggerProvider) {
         super();
@@ -201,13 +198,6 @@ class SpinnerPlaceholderService extends SpinnerServiceBase {
     stopListener(...args) {
     }
 }
-/** @nocollapse */ SpinnerPlaceholderService.ɵfac = function SpinnerPlaceholderService_Factory(t) { return new (t || SpinnerPlaceholderService)(i0.ɵɵinject(i1.LoggerProviderImpl)); };
-/** @nocollapse */ SpinnerPlaceholderService.ɵprov = /** @pureOrBreakMyCode */ i0.ɵɵdefineInjectable({ token: SpinnerPlaceholderService, factory: SpinnerPlaceholderService.ɵfac });
-(function () {
-    (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(SpinnerPlaceholderService, [{
-            type: Injectable
-        }], function () { return [{ type: i1.LoggerProviderImpl }]; }, null);
-})();
 
 /*
  * Public API Surface of ngx-spinner
