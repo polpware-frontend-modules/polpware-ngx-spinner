@@ -13,8 +13,18 @@ function loadingIndicatorDecorator(constructor) {
 }
 
 class NullSpinner {
-    show() { }
-    hide() { }
+    show(...args) { }
+    hide(...args) { }
+    showAsync(...args) {
+        return new Promise((resolve, reject) => {
+            resolve();
+        });
+    }
+    hideAsync(...args) {
+        return new Promise((resolve, reject) => {
+            resolve();
+        });
+    }
     setDelay(seconds) { }
 }
 
@@ -129,6 +139,18 @@ class SpinnerServiceBase {
                 }, this._dismissingDelay);
             }
         }
+    }
+    async showAsync(...args) {
+        this._showingTimer = 0;
+        this.spinnerState = true;
+        await this.underlyingSpinner.showAsync(...args);
+    }
+    async hideAsync(...args) {
+        // Clean up the timer
+        this._dismissingTimer = 0;
+        this.spinnerState = false;
+        // Dismiss the spinner 
+        await this.underlyingSpinner.hideAsync(...args);
     }
     preShow() {
         this.logger.debug('Spinner requested to show');

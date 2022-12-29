@@ -21,6 +21,8 @@ export declare abstract class SpinnerServiceBase implements ISpinnerService {
     setDismissDelay(seconds: number): void;
     show(...args: any[]): void;
     hide(...args: any[]): void;
+    showAsync(...args: any[]): Promise<void>;
+    hideAsync(...args: any[]): Promise<void>;
     protected preShow(): boolean;
     protected preHide(): boolean;
 }
