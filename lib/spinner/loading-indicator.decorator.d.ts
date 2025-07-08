@@ -2,7 +2,7 @@ import { ISpinnerService } from './spinner.interface';
 interface IDecoratorPrerequisite {
     spinner: ISpinnerService;
 }
-declare type DecoratorPrequisiteClass = {
+type DecoratorPrequisiteClass = {
     new (...args: any[]): IDecoratorPrerequisite;
 };
 export declare function loadingIndicatorDecorator<T extends DecoratorPrequisiteClass>(constructor: T): {
